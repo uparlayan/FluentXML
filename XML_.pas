@@ -1,12 +1,14 @@
-{*******************************************************}
-{                                                       }
-{       Fluent XML Class                                }
-{                                                       }
-{       Copyright © 2017 Uður PARLAYAN                  }
-{                        ugurparlayan@gmail.com         }
-{                                                       }
-{*******************************************************}
-
+{-------------------------------------------------------------------------------
+-  Author      : UÄŸur PARLAYAN                                                 -
+-  Email       : ugurparlayan@gmail.com                                        -
+-  Class Name  : TFluentXML Generator.                                         -
+-  Description : This unit demonstrates how we can produce an XML document     -
+-                in Object Pascal (Delphi) with a simple way of using          -
+-                the Fluent Design pattern and is offered to                   -
+-                community service for this purpose.                           -
+-  Create Date : 2017-09-12                                                    -
+-  License     : GPL-3.0                                                       -
+-------------------------------------------------------------------------------}
 unit XML_;
 
 interface
@@ -15,16 +17,15 @@ uses
   System.SysUtils, System.StrUtils, System.Variants, System.Classes, Vcl.Dialogs;
 
 type
-  TVarArray = array of Variant;
-  TVarArrayHelper = record helper for TVarArray
-    public
-      function Ayracli(aAyrac: String): String;
-  end;
-  TEncodingHelper = class Helper for TEncoding
-    public
-      function AsEncoderName: String;
-  end;
-  TXML2 = class
+  TFluentXML = class
+    type
+      TVarArray = array of Variant;
+      TVarArrayHelper = record helper for TVarArray
+        function Concat(aAyrac: String): String;
+      end;
+      TEncodingHelper = class Helper for TEncoding
+        function AsEncoderName: String;
+      end;
     private
       _Version    : Double;
       _Encoding   : TEncoding;
@@ -35,31 +36,31 @@ type
       function _f(const aFormat: string; const Args: array of const): string;
       function _NS: String;
     public
-      function AsString: String; // Bu noktada zincir kýrýlýr...
-      function Version(Value: Double): TXML2;
-      function Encoding(Value: TEncoding): TXML2;
-      function NameSpace(Value: String): TXML2;
-      function Add(aNode: string): TXML2; overload;
-      function Add(aNode: string; aValue: Variant): TXML2; overload;
-      function Add(aNode: string; aSubNode: TXML2): TXML2; overload;
-      function Add(aNode: string; aAttributes: TVarArray): TXML2; overload;
-      function Add(aNode: string; aAttributes: TVarArray; aValue: Variant): TXML2; overload;
-      function Add(aNode: string; aAttributes: TVarArray; aSubNode: TXML2): TXML2; overload;
-      function SaveToFile(aFileName: TFileName): TXML2;
-      class function Yeni(aVersion: Double; aEncoding: TEncoding): TXML2;
+      function AsString: String; // Bu noktada zincir kÄ±rÄ±lÄ±r...
+      function Version(Value: Double): TFluentXML;
+      function Encoding(Value: TEncoding): TFluentXML;
+      function NameSpace(Value: String): TFluentXML;
+      function Add(aNode: string): TFluentXML; overload;
+      function Add(aNode: string; aValue: Variant): TFluentXML; overload;
+      function Add(aNode: string; aSubNode: TFluentXML): TFluentXML; overload;
+      function Add(aNode: string; aAttributes: TVarArray): TFluentXML; overload;
+      function Add(aNode: string; aAttributes: TVarArray; aValue: Variant): TFluentXML; overload;
+      function Add(aNode: string; aAttributes: TVarArray; aSubNode: TFluentXML): TFluentXML; overload;
+      function SaveToFile(aFileName: TFileName): TFluentXML;
+      class function New(aVersion: Double; aEncoding: TEncoding): TFluentXML;
   end;
-  function NewXML: TXML2;
+  function FluentXML: TFluentXML;
 
 implementation
 
-function NewXML: TXML2;
+function FluentXML: TFluentXML;
 begin
-  Result := TXML2.Create;
+  Result := TFluentXML.Create;
 end;
 
 { TXML2 }
 
-function TXML2.AsString: String;
+function TFluentXML.AsString: String;
 var
   Tmp: String;
   FS: TFormatSettings;
@@ -78,47 +79,47 @@ begin
                ;
   end;
   FormatSettings := FS;
-  Result := StringReplace(_Source, '><', '>'#13#10'<', [rfReplaceAll, rfIgnoreCase]); // CDATA içinde geçerse sýkýntý olabilir...
+  Result := StringReplace(_Source, '><', '>'#13#10'<', [rfReplaceAll, rfIgnoreCase]); // CDATA iÃ§inde geÃ§erse sÄ±kÄ±ntÄ± olabilir...
 end;
 
-function TXML2.Version(Value: Double): TXML2;
+function TFluentXML.Version(Value: Double): TFluentXML;
 begin
   _Version := Value;
   Result := Self;
 end;
 
-class function TXML2.Yeni(aVersion: Double; aEncoding: TEncoding): TXML2;
+class function TFluentXML.New(aVersion: Double; aEncoding: TEncoding): TFluentXML;
 begin
-  Result := TXML2.Create;
+  Result := TFluentXML.Create;
   Result.Version(aVersion);
   Result.Encoding(aEncoding);
 end;
 
-function TXML2.Encoding(Value: TEncoding): TXML2;
+function TFluentXML.Encoding(Value: TEncoding): TFluentXML;
 begin
   _Encoding := Value;
   Result := Self;
 end;
 
-function TXML2.NameSpace(Value: String): TXML2;
+function TFluentXML.NameSpace(Value: String): TFluentXML;
 begin
   _NameSpace := Value.Trim;
   Result := Self;
 end;
 
-function TXML2.Add(aNode: string): TXML2;
+function TFluentXML.Add(aNode: string): TFluentXML;
 begin
   _Source := _Source + _f('<%s/>', [aNode.Trim]) ;
   Result := Self;
 end;
 
-function TXML2.Add(aNode: string; aValue: Variant): TXML2;
+function TFluentXML.Add(aNode: string; aValue: Variant): TFluentXML;
 begin
   _Source := _Source + _f('<%0:s%1:s>%2:s</%0:s%1:s>', [_NS, aNode.Trim, VarToStr(aValue).Trim]) ;
   Result := Self;
 end;
 
-function TXML2.Add(aNode: string; aSubNode: TXML2): TXML2;
+function TFluentXML.Add(aNode: string; aSubNode: TFluentXML): TFluentXML;
 var
   Tmp: Variant;
 begin
@@ -131,17 +132,17 @@ begin
   end;
 end;
 
-function TXML2.Add(aNode: string; aAttributes: TVarArray; aValue: Variant): TXML2;
+function TFluentXML.Add(aNode: string; aAttributes: TVarArray; aValue: Variant): TFluentXML;
 var
   Tmp: String;
 begin
-  Tmp := aAttributes.Ayracli(' ').Trim;
+  Tmp := aAttributes.Concat(' ').Trim;
   _Source := _Source
            + _f('<%0:s%1:s%2:s>%3:s</%0:s%1:s>', [_NS, aNode.Trim, _if(Tmp.IsEmpty = True, '', ' ' + Tmp), VarToStr(aValue).Trim]) ;
   Result := Self;
 end;
 
-function TXML2.Add(aNode: string; aAttributes: TVarArray; aSubNode: TXML2): TXML2;
+function TFluentXML.Add(aNode: string; aAttributes: TVarArray; aSubNode: TFluentXML): TFluentXML;
 var
   Tmp: Variant;
 begin
@@ -154,31 +155,31 @@ begin
   end;
 end;
 
-function TXML2.Add(aNode: string; aAttributes: TVarArray): TXML2;
+function TFluentXML.Add(aNode: string; aAttributes: TVarArray): TFluentXML;
 var
   Tmp: String;
 begin
-  Tmp := aAttributes.Ayracli(' ').Trim;
+  Tmp := aAttributes.Concat(' ');
   _Source := _Source + _f('<%0:s%1:s%2:s/>', [_NS, aNode.Trim, _if(Tmp.IsEmpty = True, '', ' ' + Tmp)]) ;
   Result := Self;
 end;
 
-function TXML2._f(const aFormat: string; const Args: array of const): string;
+function TFluentXML._f(const aFormat: string; const Args: array of const): string;
 begin
   Result := Format(aFormat, Args);
 end;
 
-function TXML2._if(aKosul: Boolean; aTrue, aFalse: String): String;
+function TFluentXML._if(aKosul: Boolean; aTrue, aFalse: String): String;
 begin
   if (aKosul = TRUE) then Result := aTrue else Result := aFalse;
 end;
 
-function TXML2._NS: String;
+function TFluentXML._NS: String;
 begin
   Result := _if( (_NameSpace.Trim.IsEmpty = True), '', _NameSpace.Trim+':');
 end;
 
-function TXML2.SaveToFile(aFileName: TFileName): TXML2;
+function TFluentXML.SaveToFile(aFileName: TFileName): TFluentXML;
 var
   Dosya : TStreamWriter;
 begin
@@ -191,14 +192,14 @@ begin
         FreeAndNil(Dosya);
       end;
   end else begin
-      ShowMessage('Dosya adresinde belirtilen klasör yok');
+      ShowMessage('Dosya adresinde belirtilen klasÃ¶r yok');
   end;
   Result := Self;
 end;
 
 { TVarArrayHelper }
 
-function TVarArrayHelper.Ayracli(aAyrac: String): String;
+function TFluentXML.TVarArrayHelper.Concat(aAyrac: String): String;
 var
  I: Integer;
 begin
@@ -210,7 +211,7 @@ end;
 
 { TEncodingHelper }
 
-function TEncodingHelper.AsEncoderName: String;
+function TFluentXML.TEncodingHelper.AsEncoderName: String;
 begin
   {---Kaynaklar-----------------------------------------------------------------------}
   { https://docs.microsoft.com/en-us/dotnet/standard/base-types/character-encoding    }
