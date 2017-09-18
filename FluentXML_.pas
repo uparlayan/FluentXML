@@ -8,6 +8,7 @@
 -                community service for this purpose.                           -
 -  Create Date : 2017-09-12                                                    -
 -  License     : GPL-3.0                                                       -
+-  Copyright (C) 2017 Uğur PARLAYAN                                            -
 -------------------------------------------------------------------------------}
 unit FluentXML_;
 
@@ -21,7 +22,7 @@ type
     type
       TVarArray = array of Variant;
       TVarArrayHelper = record helper for TVarArray
-        function Concat(aAyrac: String): String;
+        function Split(aDelimiter: String): String;
       end;
       TEncodingHelper = class Helper for TEncoding
         function AsEncoderName: String;
@@ -136,7 +137,7 @@ function TFluentXML.Add(aNode: string; aAttributes: TVarArray; aValue: Variant):
 var
   Tmp: String;
 begin
-  Tmp := aAttributes.Concat(' ').Trim;
+  Tmp := aAttributes.Split(' ').Trim;
   _Source := _Source
            + _f('<%0:s%1:s%2:s>%3:s</%0:s%1:s>', [_NS, aNode.Trim, _if(Tmp.IsEmpty = True, '', ' ' + Tmp), VarToStr(aValue).Trim]) ;
   Result := Self;
@@ -159,7 +160,7 @@ function TFluentXML.Add(aNode: string; aAttributes: TVarArray): TFluentXML;
 var
   Tmp: String;
 begin
-  Tmp := aAttributes.Concat(' ');
+  Tmp := aAttributes.Split(' ');
   _Source := _Source + _f('<%0:s%1:s%2:s/>', [_NS, aNode.Trim, _if(Tmp.IsEmpty = True, '', ' ' + Tmp)]) ;
   Result := Self;
 end;
@@ -183,29 +184,32 @@ function TFluentXML.SaveToFile(aFileName: TFileName): TFluentXML;
 var
   Dosya : TStreamWriter;
 begin
-  if (directoryExists(ExtractFileDir(aFileName), True) = TRUE) then begin
-      try
-        Dosya := TStreamWriter.Create(aFileName, False, TEncoding.UTF8);
-        Dosya.Write(Self.AsString);
-        Dosya.Close;
-      finally
-        FreeAndNil(Dosya);
-      end;
-  end else begin
-      ShowMessage('Dosya adresinde belirtilen klasör yok');
+  try
+    if (directoryExists(ExtractFileDir(aFileName), True) = TRUE) then begin
+        try
+          Dosya := TStreamWriter.Create(aFileName, False, TEncoding.UTF8);
+          Dosya.Write(Self.AsString);
+          Dosya.Close;
+        finally
+          FreeAndNil(Dosya);
+        end;
+    end else begin
+        ShowMessage('Directory not found');
+    end;
+  finally
+    Result := Self;
   end;
-  Result := Self;
 end;
 
 { TVarArrayHelper }
 
-function TFluentXML.TVarArrayHelper.Concat(aAyrac: String): String;
+function TFluentXML.TVarArrayHelper.Split(aDelimiter: String): String;
 var
- I: Integer;
+  I: Integer;
 begin
- for I := Low(Self) to High(Self)
+  for I := Low(Self) to High(Self)
   do if  (I < High(Self) )
-     then Result := Result + VarToStrDef(Self[I], '').Trim + aAyrac
+     then Result := Result + VarToStrDef(Self[I], '').Trim + aDelimiter
      else Result := Result + VarToStrDef(Self[I], '').Trim;
 end;
 
@@ -213,7 +217,7 @@ end;
 
 function TFluentXML.TEncodingHelper.AsEncoderName: String;
 begin
-  {---Kaynaklar-----------------------------------------------------------------------}
+  {-- Sources ------------------------------------------------------------------------}
   { https://docs.microsoft.com/en-us/dotnet/standard/base-types/character-encoding    }
   { http://www.iana.org/assignments/character-sets/character-sets.xhtml               }
   {-----------------------------------------------------------------------------------}
