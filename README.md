@@ -28,6 +28,7 @@ begin
                  .Add('Yazarlar'
                      ,New
                      .Add('Yazar', 'Marco CANTU')
+                     .Add('Yazar', '<![CDATA[TEST]]>')
                      )
                  )
              .Add('Kitap', [ 'ID="1001"', 'Indirimli="Evet"' ]
