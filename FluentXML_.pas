@@ -33,7 +33,7 @@ type
       _NameSpace  : string;
       _Source     : String;
     strict private
-      function _if(aKosul: Boolean; aTrue, aFalse: String): String;
+      function _if(aKosul: Boolean; aTrue, aFalse: String): String; overload;
       function _f(const aFormat: string; const Args: array of const): string;
       function _NS: String;
     public
@@ -48,19 +48,20 @@ type
       function Add(aNode: string; aAttributes: TVarArray; aValue: Variant): TFluentXML; overload;
       function Add(aNode: string; aAttributes: TVarArray; aSubNode: TFluentXML): TFluentXML; overload;
       function SaveToFile(aFileName: TFileName): TFluentXML;
+      function FormatXml: TFluentXML;
       class function New(aVersion: Double; aEncoding: TEncoding): TFluentXML;
   end;
-  function FluentXML: TFluentXML;
   function New: TFluentXML; overload;
+  function FluentXML: TFluentXML;
 
 implementation
 
-function FluentXML: TFluentXML;
+function New: TFluentXML;
 begin
   Result := TFluentXML.Create;
 end;
 
-function New: TFluentXML;
+function FluentXML: TFluentXML;
 begin
   Result := TFluentXML.Create;
 end;
@@ -75,7 +76,7 @@ begin
   FS := FormatSettings;
   FormatSettings.DecimalSeparator := '.';
   Tmp := _Encoding.AsEncoderName;
-  if (Pos( '<?xml',_Source,1) <= 0) then begin
+  if (Pos( '<?xml',_Source, 1) <= 0) then begin
       _Source := _if( ((_Version <> 0) or (Tmp.IsEmpty = False))
                     , _f ( '<?xml%s%s?>',
                          [ _if(_Version <> 0, _f(' version="%s"', [ formatfloat('0.0',_Version)]), '')
@@ -86,7 +87,8 @@ begin
                ;
   end;
   FormatSettings := FS;
-  Result := StringReplace(_Source, '><', '>'#13#10'<', [rfReplaceAll, rfIgnoreCase]); // CDATA içinde geçerse sıkıntı olabilir...
+  //Result := StringReplace(_Source, '><', '>'#13#10'<', [rfReplaceAll, rfIgnoreCase]); // CDATA içinde geçerse sıkıntı olabilir...
+  Result := _Source.Trim;
 end;
 
 function TFluentXML.Version(Value: Double): TFluentXML;
@@ -105,6 +107,93 @@ end;
 function TFluentXML.Encoding(Value: TEncoding): TFluentXML;
 begin
   _Encoding := Value;
+  Result := Self;
+end;
+
+function TFluentXML.FormatXml: TFluentXML;
+var
+  I: Integer;
+  B: Integer;
+  T: string;
+  O: Char;  //  önceki
+  X: Char;  //  şimdiki
+  N: Char;  //  sonraki
+  Ek: string;
+  TabCount  : Integer;
+  TagInside : Boolean;
+  IsStartTag: Boolean;
+  Tirnak    : Boolean;
+  cData     : Boolean;
+begin
+  B := Length(_Source);
+  O := #0;
+  X := #0;
+  N := #0;
+  TabCount    := 0;
+  TagInside   := (_Source[1] = '<');
+  IsStartTag  := TagInside;
+  Tirnak      := FALSE;
+  cData       := FALSE;
+  for I := 1 to B do begin
+      Ek := '';
+      O := X;
+      X := _Source[I];
+      if (I < B) then N := _Source[I + 1] else N := #0;
+      if (I < B - 2) then begin
+          if (X = '<') and (N = '!') then cData := True;
+          if (O = ']') and (X = '>') then cData := FALSE;
+      end;
+      if (X = '"') then Tirnak := Not Tirnak;
+      if ((Tirnak = FALSE) and (cData = False)) then begin
+          case TagInside of
+               FALSE: Begin
+                        if (X = '<') then begin
+                            TagInside := True;
+                            Inc(TabCount);
+                            IsStartTag := True;
+                            if (N = '/')
+                            or (N = '!') then begin
+                                IsStartTag := FALSE;
+                                Dec(TabCount, 1); { </ } { veya } { <! }
+                            end;
+                        end;
+                      End;
+               TRUE : begin
+                        if (O = '<') and (X = '/')  then Dec(TabCount, 1);
+                        if (X = '>') then begin
+                            TagInside := False;
+                            if (O = '/') then begin
+                                Dec(TabCount); { /> }
+                                IsStartTag := FALSE; { bu da sadece tagın göründüğü modeldir, verisiz, sadece tagın adı olur. örneğin <tag/> gibi...}
+                            end;
+                            if (N = '<') then begin          { >< }
+                                Ek := #13#10 + DupeString(#9, TabCount);// + '{' + TabCount.ToString + '}';
+                                if (I < B - 2) then begin
+                                    if (_Source[I+2] = '!') then Ek := ''; { <! }
+                                end;
+                            end;
+                        end;
+                      end;
+          end;
+      end;
+      T := T + X + Ek;
+  end;
+  //T := StringReplace(T, #9'</', '</', [rfReplaceAll]);
+  B := T.Trim.Length;
+  _Source := T.Trim;
+  T := '';
+  for I := 1 to B do begin
+      O := _Source[I];
+      if (I < B - 2) then begin
+          X := _Source[I+1];
+          N := _Source[I+2];
+      end else begin
+          X := #0;
+          N := #0;
+      end;
+      if NOT ( (O = #9) and (X = '<') and (N = '/') ) then T := T + O;
+  end;
+  _Source := T;
   Result := Self;
 end;
 
