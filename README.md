@@ -59,3 +59,36 @@ begin
  end;
 end;
 ```
+
+###### And then the output produced is as follows;
+
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Kitaplar>
+	<Kitap ID="1000" Indirimli="Hayir">
+		<Adi>Mastering Delphi</Adi>
+		<Fiyat>50</Fiyat>
+		<Stok>40</Stok>
+		<Yazarlar>
+			<Yazar><![CDATA[TEST]]></Yazar>
+		</Yazarlar>
+	</Kitap>
+	<Kitap ID="1001" Indirimli="Evet">
+		<Adi>PHP, MySQL ve Apache</Adi>
+		<Fiyat>65</Fiyat>
+		<Stok>30</Stok>
+		<Yazarlar>
+			<Yazar>Julie C. MELONI</Yazar>
+		</Yazarlar>
+	</Kitap>
+	<Kitap ID="1002" Indirimli="Evet">
+		<Adi>Delphi Cookbook</Adi>
+		<Fiyat>35</Fiyat>
+		<Stok>300</Stok>
+		<Yazarlar>
+			<Yazar>Daniele TETİ</Yazar>
+		</Yazarlar>
+	</Kitap>
+</Kitaplar>
+```
