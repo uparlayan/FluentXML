@@ -71,6 +71,7 @@ end;
 		<Fiyat>50</Fiyat>
 		<Stok>40</Stok>
 		<Yazarlar>
+			<Yazar>Marco CANTU</Yazar>
 			<Yazar><![CDATA[TEST]]></Yazar>
 		</Yazarlar>
 	</Kitap>
