@@ -51,10 +51,16 @@ type
       class function New(aVersion: Double; aEncoding: TEncoding): TFluentXML;
   end;
   function FluentXML: TFluentXML;
+  function New: TFluentXML; overload;
 
 implementation
 
 function FluentXML: TFluentXML;
+begin
+  Result := TFluentXML.Create;
+end;
+
+function New: TFluentXML;
 begin
   Result := TFluentXML.Create;
 end;
