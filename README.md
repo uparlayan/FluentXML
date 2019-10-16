@@ -4,7 +4,7 @@ This unit demonstrates how we can produce an XML document in Object Pascal (Delp
 
 Uğur PARLAYAN
 
-http://www.rubicube.com.tr
+http://www.potansif.com
 
 ###### for example;
 
