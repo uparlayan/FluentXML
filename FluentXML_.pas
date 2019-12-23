@@ -15,12 +15,12 @@ unit FluentXML_;
 interface
 
 uses
-  System.SysUtils, System.StrUtils, System.Variants, System.Classes, Vcl.Dialogs;
+  System.SysUtils, System.StrUtils, System.Variants, System.Classes;
 
 type
   TFluentXML = class
     type
-      TVarArray = array of Variant;
+      TVarArray       = array of Variant;
       TVarArrayHelper = record helper for TVarArray
         function Split(aDelimiter: String): String;
       end;
@@ -31,6 +31,7 @@ type
       _Version    : Double;
       _Encoding   : TEncoding;
       _NameSpace  : string;
+      _StyleSheet : string;
       _Source     : String;
     strict private
       function _if(aKosul: Boolean; aTrue, aFalse: String): String; overload;
@@ -41,6 +42,8 @@ type
       function Version(Value: Double): TFluentXML;
       function Encoding(Value: TEncoding): TFluentXML;
       function NameSpace(Value: String): TFluentXML;
+      function StyleSheet(aType, aHref: String): TFluentXML;
+      function Add(aNode: TFluentXML): TFluentXML; overload;
       function Add(aNode: string): TFluentXML; overload;
       function Add(aNode: string; aValue: Variant): TFluentXML; overload;
       function Add(aNode: string; aSubNode: TFluentXML): TFluentXML; overload;
@@ -52,7 +55,11 @@ type
       class function New(aVersion: Double; aEncoding: TEncoding): TFluentXML;
   end;
   function New: TFluentXML; overload;
-  function FluentXML: TFluentXML;
+  function New(aNameSpace: String): TFluentXML; overload;
+  function New(aEncoding: TEncoding): TFluentXML; overload;
+  function XML: TFluentXML; overload;
+  function XML(aNameSpace: String): TFluentXML; overload;
+  function XML(aEncoding: TEncoding): TFluentXML; overload;
 
 implementation
 
@@ -61,9 +68,31 @@ begin
   Result := TFluentXML.Create;
 end;
 
-function FluentXML: TFluentXML;
+function New(aNameSpace: String): TFluentXML; overload;
 begin
   Result := TFluentXML.Create;
+  Result._NameSpace := aNameSpace.Trim;
+end;
+
+function New(aEncoding: TEncoding): TFluentXML; overload;
+begin
+  Result := TFluentXML.Create;
+  Result._Encoding := aEncoding;
+end;
+
+function XML: TFluentXML;
+begin
+  Result := New;
+end;
+
+function XML(aNameSpace: String): TFluentXML; overload;
+begin
+  Result := New(aNameSpace);
+end;
+
+function XML(aEncoding: TEncoding): TFluentXML; overload;
+begin
+  Result := New(aEncoding);
 end;
 
 { TXML2 }
@@ -78,11 +107,12 @@ begin
   Tmp := _Encoding.AsEncoderName;
   if (Pos( '<?xml',_Source, 1) <= 0) then begin
       _Source := _if( ((_Version <> 0) or (Tmp.IsEmpty = False))
-                    , _f ( '<?xml%s%s?>',
+                    , _f ( '<?xml%s%s?>'#13#10,
                          [ _if(_Version <> 0, _f(' version="%s"', [ formatfloat('0.0',_Version)]), '')
                          , _if(Tmp.IsEmpty = False, _f(' encoding="%s"', [Tmp]), '')
                          ])
                     , '')
+               + _if( _StyleSheet.Trim.IsEmpty, '', _StyleSheet + #13#10)
                + _Source
                ;
   end;
@@ -112,8 +142,8 @@ end;
 
 function TFluentXML.FormatXml: TFluentXML;
 var
-  I: Integer;
-  B: Integer;
+  I: Integer;     //  Indis
+  B: Integer;     //  Len / Size...
   T: string;
   O: Char;  //  önceki
   X: Char;  //  şimdiki
@@ -129,7 +159,7 @@ begin
   O := #0;
   X := #0;
   N := #0;
-  TabCount    := 0;
+  TabCount    := 1;
   TagInside   := (_Source[1] = '<');
   IsStartTag  := TagInside;
   Tirnak      := FALSE;
@@ -228,6 +258,15 @@ begin
   end;
 end;
 
+function TFluentXML.Add(aNode: TFluentXML): TFluentXML;
+begin
+  if (Assigned(aNode) = TRUE) then begin
+      _Source := _Source + aNode.AsString;
+      FreeAndNil(aNode);
+  end;
+  Result := Self;
+end;
+
 function TFluentXML.Add(aNode: string; aAttributes: TVarArray; aValue: Variant): TFluentXML;
 var
   Tmp: String;
@@ -289,11 +328,17 @@ begin
           FreeAndNil(Dosya);
         end;
     end else begin
-        ShowMessage('Directory not found');
+        raise Exception.Create('Directory not found');
     end;
   finally
     Result := Self;
   end;
+end;
+
+function TFluentXML.StyleSheet(aType, aHref: String): TFluentXML;
+begin
+  _StyleSheet := _f('<?xml-stylesheet type="%s" href="%s"?>', [aType, aHref]);
+  Result := Self;
 end;
 
 { TVarArrayHelper }
