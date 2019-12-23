@@ -23,7 +23,7 @@ type
       TVarArray       = array of Variant;
       TVarArrayHelper = record helper for TVarArray
         function Split(aDelimiter: String): String;
-      end;
+      end; 
       TEncodingHelper = class Helper for TEncoding
         function AsEncoderName: String;
       end;
