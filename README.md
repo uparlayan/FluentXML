@@ -65,7 +65,7 @@ end;
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<Kitaplar>
+<Kutuphane>
 	<Kitap ID="1000" Indirimli="Hayir">
 		<Adi>Mastering Delphi</Adi>
 		<Fiyat>50</Fiyat>
@@ -91,5 +91,5 @@ end;
 			<Yazar>Daniele TETİ</Yazar>
 		</Yazarlar>
 	</Kitap>
-</Kitaplar>
+</Kutuphane>
 ```
