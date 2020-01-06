@@ -7,6 +7,7 @@
 -                the Fluent Design pattern and is offered to                   -
 -                community service for this purpose.                           -
 -  Create Date : 2017-09-12                                                    -
+-  Update Date : 2020-01-06                                                    -
 -  License     : GPL-3.0                                                       -
 -  Copyright (C) 2017 Uğur PARLAYAN                                            -
 -------------------------------------------------------------------------------}
@@ -23,7 +24,7 @@ type
       TVarArray       = array of Variant;
       TVarArrayHelper = record helper for TVarArray
         function Split(aDelimiter: String): String;
-      end; 
+      end;
       TEncodingHelper = class Helper for TEncoding
         function AsEncoderName: String;
       end;
@@ -33,17 +34,20 @@ type
       _NameSpace  : string;
       _StyleSheet : string;
       _Source     : String;
+      _Root       : String;
     strict private
       function _if(aKosul: Boolean; aTrue, aFalse: String): String; overload;
       function _f(const aFormat: string; const Args: array of const): string;
       function _NS: String;
     public
       function AsString: String; // Bu noktada zincir kırılır...
+      function Root(Name: String): TFluentXML;
       function Version(Value: Double): TFluentXML;
       function Encoding(Value: TEncoding): TFluentXML;
       function NameSpace(Value: String): TFluentXML;
       function StyleSheet(aType, aHref: String): TFluentXML;
       function Add(aNode: TFluentXML): TFluentXML; overload;
+      function Add(aNodes: Array of TFluentXML): TFluentXML; overload;
       function Add(aNode: string): TFluentXML; overload;
       function Add(aNode: string; aValue: Variant): TFluentXML; overload;
       function Add(aNode: string; aSubNode: TFluentXML): TFluentXML; overload;
@@ -113,7 +117,16 @@ begin
                          ])
                     , '')
                + _if( _StyleSheet.Trim.IsEmpty, '', _StyleSheet + #13#10)
-               + _Source
+               + _if( _Root.Trim.IsEmpty
+                    , _Source
+                    , _f('<%0:s>'#13#10'%1:s'#13#10'</%0:s>'#13#10,
+                          [ _if( _NameSpace.Trim.IsEmpty = true
+                               , _Root
+                               , _NS + _Root
+                               )
+                          , _Source
+                          ])
+                    )
                ;
   end;
   FormatSettings := FS;
@@ -132,6 +145,12 @@ begin
   Result := TFluentXML.Create;
   Result.Version(aVersion);
   Result.Encoding(aEncoding);
+end;
+
+function TFluentXML.Root(Name: String): TFluentXML;
+begin
+  _Root := Name;
+  Result := Self;
 end;
 
 function TFluentXML.Encoding(Value: TEncoding): TFluentXML;
@@ -264,6 +283,18 @@ begin
       _Source := _Source + aNode.AsString;
       FreeAndNil(aNode);
   end;
+  Result := Self;
+end;
+
+function TFluentXML.Add(aNodes: Array of TFluentXML): TFluentXML;
+var
+  X: TFluentXML;
+  I: Integer;
+begin
+  for X in aNodes do begin
+      _Source := _Source + X.AsString;
+  end;
+  for I := High(aNodes) downto Low(aNodes) do FreeAndNil(aNodes[I]);
   Result := Self;
 end;
 
