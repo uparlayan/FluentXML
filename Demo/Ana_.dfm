@@ -24,7 +24,6 @@ object Ana: TAna
     Padding.Right = 8
     Padding.Bottom = 8
     TabOrder = 0
-    ExplicitWidth = 635
     object bt_Kitap: TButton
       Left = 9
       Top = 9
@@ -60,7 +59,5 @@ object Ana: TAna
     ParentFont = False
     ScrollBars = ssVertical
     TabOrder = 1
-    ExplicitWidth = 635
-    ExplicitHeight = 250
   end
 end

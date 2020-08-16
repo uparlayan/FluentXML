@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.796,=P:\Dev\Delphi\ProjSYDNEY\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.493,P:\Dev\Delphi\ProjSYDNEY\Unit1.dfm=P:\Dev\Delphi\ProjGIT\FluentXML\Demo\Ana_.dfm</Transaction>
     <Transaction>1899.12.30 00:00:00.000.972,=P:\Dev\Delphi\ProjGIT\FluentXML\Src\FluentXML_.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.493,P:\Dev\Delphi\ProjGIT\FluentXML\Demo\Ana_.dfm=P:\Dev\Delphi\ProjSYDNEY\Unit1.dfm</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.738,P:\Dev\Delphi\ProjGIT\FluentXML\Demo\FluentXml_Demo.dproj=P:\Dev\Delphi\ProjSYDNEY\Project1.dproj</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.493,P:\Dev\Delphi\ProjGIT\FluentXML\Demo\Ana_.pas=P:\Dev\Delphi\ProjSYDNEY\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.493,P:\Dev\Delphi\ProjSYDNEY\Unit1.pas=P:\Dev\Delphi\ProjGIT\FluentXML\Demo\Ana_.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.796,=P:\Dev\Delphi\ProjSYDNEY\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.738,P:\Dev\Delphi\ProjSYDNEY\Project1.dproj=P:\Dev\Delphi\ProjGIT\FluentXML\Demo\FluentXml_Demo.dproj</Transaction>
   </Transactions>
 </BorlandProject>
