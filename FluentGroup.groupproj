@@ -6,6 +6,9 @@
         <Projects Include="FluentPack.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Demo\FluentXml_Demo.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -23,14 +26,23 @@
     <Target Name="FluentPack:Make">
         <MSBuild Projects="FluentPack.dproj" Targets="Make"/>
     </Target>
+    <Target Name="FluentXml_Demo">
+        <MSBuild Projects="Demo\FluentXml_Demo.dproj"/>
+    </Target>
+    <Target Name="FluentXml_Demo:Clean">
+        <MSBuild Projects="Demo\FluentXml_Demo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FluentXml_Demo:Make">
+        <MSBuild Projects="Demo\FluentXml_Demo.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="FluentPack"/>
+        <CallTarget Targets="FluentPack;FluentXml_Demo"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="FluentPack:Clean"/>
+        <CallTarget Targets="FluentPack:Clean;FluentXml_Demo:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="FluentPack:Make"/>
+        <CallTarget Targets="FluentPack:Make;FluentXml_Demo:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
