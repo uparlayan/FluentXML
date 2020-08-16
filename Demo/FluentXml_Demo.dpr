@@ -1,4 +1,4 @@
-program FluentXml_Demo;
+﻿program FluentXml_Demo;
 
 uses
   Vcl.Forms,
@@ -8,6 +8,7 @@ uses
 {$R *.res}
 
 begin
+  ReportMemoryLeaksOnShutdown := True;
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TAna, Ana);
