@@ -17,7 +17,11 @@ unit FluentXML_;
 interface
 
 uses
-  System.SysUtils, System.StrUtils, System.Variants, System.Classes;
+    System.SysUtils
+  , System.StrUtils
+  , System.Variants
+  , System.Classes
+  ;
 
 type
   TFluentXML = class
@@ -41,7 +45,8 @@ type
       function _f(const aFormat: string; const Args: array of const): string;
       function _NS: String;
     public
-      function AsString: String; // Bu noktada zincir kırılır...
+      function AsString: String; overload;
+      function AsString(out aStringVariable: String): TFluentXML; overload;
       function Root(Name: String): TFluentXML;
       function Version(Value: Double): TFluentXML;
       function Encoding(Value: TEncoding): TFluentXML;
@@ -62,6 +67,7 @@ type
   function New: TFluentXML; overload;
   function New(aNameSpace: String): TFluentXML; overload;
   function New(aEncoding: TEncoding): TFluentXML; overload;
+  function New(aNodes: Array of TFluentXML): TFluentXML; overload;
   function XML: TFluentXML; overload;
   function XML(aNameSpace: String): TFluentXML; overload;
   function XML(aEncoding: TEncoding): TFluentXML; overload;
@@ -85,6 +91,16 @@ begin
   Result._Encoding := aEncoding;
 end;
 
+function New(aNodes: Array of TFluentXML): TFluentXML; overload;
+var
+  X: TFluentXML;
+  I: Integer;
+begin
+  Result := TFluentXML.Create;
+  for X in aNodes do Result._Source := Result._Source + X.AsString;
+  for I := High(aNodes) downto Low(aNodes) do FreeAndNil(aNodes[I]);
+end;
+
 function XML: TFluentXML;
 begin
   Result := New;
@@ -100,7 +116,11 @@ begin
   Result := New(aEncoding);
 end;
 
-{ TXML2 }
+function TFluentXML.AsString(out aStringVariable: String): TFluentXML;
+begin
+  aStringVariable := Self.AsString;
+  Result := Self;
+end;
 
 function TFluentXML.AsString: String;
 var
@@ -161,6 +181,8 @@ begin
 end;
 
 function TFluentXML.FormatXml: TFluentXML;
+const
+  Tab = #65501;
 var
   I: Integer;     //  Indis
   B: Integer;     //  Len / Size...
@@ -217,7 +239,7 @@ begin
                                 IsStartTag := FALSE; { bu da sadece tagın göründüğü modeldir, verisiz, sadece tagın adı olur. örneğin <tag/> gibi...}
                             end;
                             if (N = '<') then begin          { >< }
-                                Ek := #13#10 + DupeString(#9, TabCount);// + '{' + TabCount.ToString + '}';
+                                Ek := #13#10 + DupeString(Tab, TabCount);// + '{' + TabCount.ToString + '}';
                                 if (I < B - 2) then begin
                                     if (_Source[I+2] = '!') then Ek := ''; { <! }
                                 end;
@@ -228,7 +250,7 @@ begin
       end;
       T := T + X + Ek;
   end;
-  //T := StringReplace(T, #9'</', '</', [rfReplaceAll]);
+  //T := StringReplace(T, Girinti'</', '</', [rfReplaceAll]);
   B := T.Trim.Length;
   _Source := T.Trim;
   T := '';
@@ -241,9 +263,9 @@ begin
           X := #0;
           N := #0;
       end;
-      if NOT ( (O = #9) and (X = '<') and (N = '/') ) then T := T + O;
+      if NOT ( (O = Tab) and (X = '<') and (N = '/') ) then T := T + O;
   end;
-  _Source := T;
+  _Source := StringReplace(T, Tab, #32#32, [rfReplaceAll]);
   Result := Self;
 end;
 
@@ -369,7 +391,7 @@ end;
 
 function TFluentXML.StyleSheet(aType, aHref: String): TFluentXML;
 begin
-  _StyleSheet := _f('<?xml-stylesheet type="%s" href="%s"?>', [aType, aHref]);
+  _StyleSheet := _f('<?xml-stylesheet type="%s" href="%s"?>', [aType.Trim, aHref.Trim]);
   Result := Self;
 end;
 

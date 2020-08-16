@@ -9,7 +9,7 @@ http://www.potansif.com
 ###### for example;
 
 ```delphi
-procedure TForm1.Button2Click(Sender: TObject);
+procedure TForm1.Button1Click(Sender: TObject);
 var
  XML: TFluentXML;
 begin
@@ -18,7 +18,7 @@ begin
          .Version(1.0)
          .Encoding(TEncoding.UTF8)
          .NameSpace('')
-         .Add('Kutuphane'
+         .Add('Kitaplar'
              ,New
              .Add('Kitap', [ 'ID="1000"', 'Indirimli="Hayir"' ]
                  ,New
@@ -65,7 +65,7 @@ end;
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<Kutuphane>
+<Kitaplar>
 	<Kitap ID="1000" Indirimli="Hayir">
 		<Adi>Mastering Delphi</Adi>
 		<Fiyat>50</Fiyat>
@@ -91,5 +91,5 @@ end;
 			<Yazar>Daniele TETİ</Yazar>
 		</Yazarlar>
 	</Kitap>
-</Kutuphane>
+</Kitaplar>
 ```
