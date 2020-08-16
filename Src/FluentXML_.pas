@@ -11,7 +11,7 @@
 -  Update Date : 2020-08-16                                                    -
 -  License     : GPL-3.0                                                       -
 -  Copyright (C) 2017 Uğur PARLAYAN                                            -
--------------------------------------------------------------------------------} 
+-------------------------------------------------------------------------------}
 unit FluentXML_;
 
 interface
@@ -24,7 +24,18 @@ uses
   ;
 
 type
+  /// <summary>
+  /// XML dosyası üretmek için kullanılır. Node'lar fluent mantığına uygun olarak kuyruk şeklinde ard arda eklenebilir ve Tür, kendi kendini parametre olarak kullanabilir.
+  /// </summary>
   TFluentXML = class
+    const
+      /// <summary>
+      ///  TAB (#9) karakteri ile yer değiştirecek olan sabittir. Hem kodlamada hem de XML Biçimlendirmede kullanılır.
+      /// </summary>
+      /// <remarks>
+      ///  FormatXML işlevinde bu karakter #9 veya #32#32'ye dahili olarak dönüştürülür.
+      /// </remarks>
+      Tab = #1;
     type
       TVarArray       = array of Variant;
       TVarArrayHelper = record helper for TVarArray
@@ -45,7 +56,13 @@ type
       function _f(const aFormat: string; const Args: array of const): string;
       function _NS: String;
     public
+      /// <summary>
+      ///  String Export amacıyla kullanılır. Tür String olduğu için fluent akışı bozulur. O nedenle aşırı yüklenmiş diğer fonksiyonu kullanın.
+      /// </summary>
       function AsString: String; overload;
+      /// <summary>
+      ///  String Export amacıyla kullanılır. Parametre olarak aldığı değişkene bünyesinde tuttuğu XML kaynak kodunu aktarır.
+      /// </summary>
       function AsString(out aStringVariable: String): TFluentXML; overload;
       function Root(Name: String): TFluentXML;
       function Version(Value: Double): TFluentXML;
@@ -138,6 +155,8 @@ begin
                          ])
                     , '')
                + _if( _StyleSheet.Trim.IsEmpty, '', _StyleSheet + #13#10)
+               + _Source
+               { // Bu kısım FormatXml işlevine taşındı
                + _if( _Root.Trim.IsEmpty
                     , _Source
                     , _f('<%0:s>'#13#10'%1:s'#13#10'</%0:s>'#13#10,
@@ -148,10 +167,10 @@ begin
                           , _Source
                           ])
                     )
+               }
                ;
   end;
   FormatSettings := FS;
-  //Result := StringReplace(_Source, '><', '>'#13#10'<', [rfReplaceAll, rfIgnoreCase]); // CDATA içinde geçerse sıkıntı olabilir...
   Result := _Source.Trim;
 end;
 
@@ -181,22 +200,21 @@ begin
 end;
 
 function TFluentXML.FormatXml: TFluentXML;
-const
-  Tab = #65501;
 var
-  I: Integer;     //  Indis
-  B: Integer;     //  Len / Size...
-  T: string;
-  O: Char;  //  önceki
-  X: Char;  //  şimdiki
-  N: Char;  //  sonraki
-  Ek: string;
-  TabCount  : Integer;
-  TagInside : Boolean;
-  IsStartTag: Boolean;
-  Tirnak    : Boolean;
-  cData     : Boolean;
+  I           : Integer;     //  Indis
+  B           : Integer;     //  Len / Size...
+  T           : string;
+  O           : Char;        //  önceki
+  X           : Char;        //  şimdiki
+  N           : Char;        //  sonraki
+  Ek          : string;
+  TabCount    : Integer;
+  TagInside   : Boolean;
+  IsStartTag  : Boolean;
+  Tirnak      : Boolean;
+  cData       : Boolean;
 begin
+  if (_Root.Trim.IsEmpty = False) then _Source := _f('<%0:s%1:s>%2:s</%0:s%1:s>', [_NS, _Root.Trim, _Source{, _if(_NS.Trim.IsEmpty, '', ':')}]);
   B := Length(_Source);
   O := #0;
   X := #0;
@@ -250,7 +268,6 @@ begin
       end;
       T := T + X + Ek;
   end;
-  //T := StringReplace(T, Girinti'</', '</', [rfReplaceAll]);
   B := T.Trim.Length;
   _Source := T.Trim;
   T := '';
