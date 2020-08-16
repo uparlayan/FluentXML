@@ -122,7 +122,7 @@ begin
       XML.DisposeOf;
   end else
   {$endregion}
-  {$region 'Boş IF şablonu'}
+  {$region 'Boş if şablonu'}
   if (Sender = nil) then begin
   end else
   {$endregion}
