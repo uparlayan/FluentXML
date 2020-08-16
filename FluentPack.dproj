@@ -115,6 +115,7 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
         <DCC_Description>Fluent XML by Uğur PARLAYAN</DCC_Description>
         <DCC_UsePackage>rtl;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_DcuOutput>.\Compiled\Dcu</DCC_DcuOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
         <DCC_UsePackage>rtl;$(DCC_UsePackage)</DCC_UsePackage>

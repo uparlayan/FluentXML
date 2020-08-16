@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.885,P:\Dev\Delphi\ProjSYDNEY\Package1.dproj=P:\Dev\Delphi\ProjGIT\FluentXML\FluentPack.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.845,=P:\Dev\Delphi\ProjGIT\FluentXML\Src\FluentXML_.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.381,=rtl.dcp</Transaction>
+  </Transactions>
+</BorlandProject>
