@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="urn:oasis:names:specification:ubl:schema:xsd:DespatchAdvice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:oasis:names:specification:ubl:schema:xsd:DespatchAdvice-2" elementFormDefault="qualified" attributeFormDefault="unqualified" version="2.1">
+	<xsd:import namespace="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" schemaLocation="../common/UBL-CommonAggregateComponents-2.1.xsd"/>
+	<xsd:import namespace="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" schemaLocation="../common/UBL-CommonBasicComponents-2.1.xsd"/>
+	<xsd:import namespace="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" schemaLocation="../common/UBL-CommonExtensionComponents-2.1.xsd"/>
+	<xsd:element name="DespatchAdvice" type="DespatchAdviceType"/>
+	<xsd:complexType name="DespatchAdviceType">
+		<xsd:sequence>
+			<xsd:element ref="ext:UBLExtensions"/>
+			<xsd:element ref="cbc:UBLVersionID"/>
+			<xsd:element ref="cbc:CustomizationID"/>
+			<xsd:element ref="cbc:ProfileID"/>
+			<xsd:element ref="cbc:ID"/>
+			<xsd:element ref="cbc:CopyIndicator"/>
+			<xsd:element ref="cbc:UUID"/>
+			<xsd:element ref="cbc:IssueDate"/>
+			<xsd:element ref="cbc:IssueTime"/>
+			<xsd:element ref="cbc:DespatchAdviceTypeCode" minOccurs="0"/>
+			<xsd:element ref="cbc:Note" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="cbc:LineCountNumeric" minOccurs="0"/>
+			<xsd:element ref="cac:OrderReference" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="cac:AdditionalDocumentReference" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="cac:Signature" maxOccurs="unbounded"/>
+			<xsd:element ref="cac:DespatchSupplierParty"/>
+			<xsd:element ref="cac:DeliveryCustomerParty"/>
+			<xsd:element ref="cac:BuyerCustomerParty" minOccurs="0"/>
+			<xsd:element ref="cac:SellerSupplierParty" minOccurs="0"/>
+			<xsd:element ref="cac:OriginatorCustomerParty" minOccurs="0"/>
+			<xsd:element ref="cac:Shipment"/>
+			<xsd:element ref="cac:DespatchLine" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

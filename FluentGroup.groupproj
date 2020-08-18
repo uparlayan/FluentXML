@@ -9,6 +9,9 @@
         <Projects Include="Demo\FluentXml_Demo.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="Demo_EFatura\EFaturaDemo.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -35,14 +38,23 @@
     <Target Name="FluentXml_Demo:Make">
         <MSBuild Projects="Demo\FluentXml_Demo.dproj" Targets="Make"/>
     </Target>
+    <Target Name="EFaturaDemo">
+        <MSBuild Projects="Demo_EFatura\EFaturaDemo.dproj"/>
+    </Target>
+    <Target Name="EFaturaDemo:Clean">
+        <MSBuild Projects="Demo_EFatura\EFaturaDemo.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="EFaturaDemo:Make">
+        <MSBuild Projects="Demo_EFatura\EFaturaDemo.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="FluentPack;FluentXml_Demo"/>
+        <CallTarget Targets="FluentPack;FluentXml_Demo;EFaturaDemo"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="FluentPack:Clean;FluentXml_Demo:Clean"/>
+        <CallTarget Targets="FluentPack:Clean;FluentXml_Demo:Clean;EFaturaDemo:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="FluentPack:Make;FluentXml_Demo:Make"/>
+        <CallTarget Targets="FluentPack:Make;FluentXml_Demo:Make;EFaturaDemo:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
