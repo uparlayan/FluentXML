@@ -1,9 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
-  <Transactions>
-    <Transaction>2020.08.18 20:31:51.250,=P:\Dev\Delphi\ProjSYDNEY\Unit1.pas</Transaction>
-    <Transaction>2020.08.18 20:32:30.200,P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\Ana_.pas=P:\Dev\Delphi\ProjSYDNEY\Unit1.pas</Transaction>
-    <Transaction>2020.08.18 20:32:30.200,P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\Ana_.dfm=P:\Dev\Delphi\ProjSYDNEY\Unit1.dfm</Transaction>
-    <Transaction>2020.08.18 20:32:38.165,P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\EFaturaDemo.dproj=P:\Dev\Delphi\ProjSYDNEY\Project1.dproj</Transaction>
+	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.010,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-CreditNote-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.975,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-ApplicationResponse-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.094,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-ReceiptAdvice-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.386,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-QualifiedDataTypes-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.250,=P:\Dev\Delphi\ProjSYDNEY\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.200,P:\Dev\Delphi\ProjSYDNEY\Unit1.pas=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\Ana_.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.114,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-CommonBasicComponents-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.200,P:\Dev\Delphi\ProjSYDNEY\Unit1.dfm=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\Ana_.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.435,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-SignatureAggregateComponents-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.757,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-xmldsig-core-schema-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.057,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-DespatchAdvice-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.031,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\CCTS_CCT_SchemaModule-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.338,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-ExtensionContentDataType-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.165,P:\Dev\Delphi\ProjSYDNEY\Project1.dproj=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\EFaturaDemo.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.221,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-CommonSignatureComponents-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.169,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-Invoice-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.071,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-CommonAggregateComponents-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.507,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-SignatureBasicComponents-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.921,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\EFatura_Canl_.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.268,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-CoreComponentParameters-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.699,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-XAdESv141-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.363,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.887,P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\Unit1.pas=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\Classes\EFatura_Class_.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.560,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-UnqualifiedDataTypes-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.643,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-XAdESv132-2.1.xsd</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.176,=P:\Dev\Delphi\ProjGIT\FluentXML\Demo_EFatura\UBL\UBL-CommonExtensionComponents-2.1.xsd</Transaction>
   </Transactions>
 </BorlandProject>

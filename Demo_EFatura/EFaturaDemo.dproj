@@ -102,6 +102,26 @@
             <Form>Ana</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="Classes\EFatura_Class_.pas"/>
+        <None Include="UBL\UBL-Invoice-2.1.xsd"/>
+        <None Include="UBL\UBL-ApplicationResponse-2.1.xsd"/>
+        <None Include="UBL\UBL-CreditNote-2.1.xsd"/>
+        <None Include="UBL\UBL-DespatchAdvice-2.1.xsd"/>
+        <None Include="UBL\UBL-ReceiptAdvice-2.1.xsd"/>
+        <None Include="UBL\CCTS_CCT_SchemaModule-2.1.xsd"/>
+        <None Include="UBL\UBL-CommonAggregateComponents-2.1.xsd"/>
+        <None Include="UBL\UBL-CommonBasicComponents-2.1.xsd"/>
+        <None Include="UBL\UBL-CommonExtensionComponents-2.1.xsd"/>
+        <None Include="UBL\UBL-CommonSignatureComponents-2.1.xsd"/>
+        <None Include="UBL\UBL-CoreComponentParameters-2.1.xsd"/>
+        <None Include="UBL\UBL-ExtensionContentDataType-2.1.xsd"/>
+        <None Include="UBL\UBL-QualifiedDataTypes-2.1.xsd"/>
+        <None Include="UBL\UBL-SignatureAggregateComponents-2.1.xsd"/>
+        <None Include="UBL\UBL-SignatureBasicComponents-2.1.xsd"/>
+        <None Include="UBL\UBL-UnqualifiedDataTypes-2.1.xsd"/>
+        <None Include="UBL\UBL-XAdESv132-2.1.xsd"/>
+        <None Include="UBL\UBL-XAdESv141-2.1.xsd"/>
+        <None Include="UBL\UBL-xmldsig-core-schema-2.1.xsd"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -128,9 +148,123 @@
                 <Platform value="Win64">False</Platform>
             </Platforms>
             <Deployment Version="3">
+                <DeployFile LocalName="UBL\UBL-XAdESv132-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-CoreComponentParameters-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-ApplicationResponse-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-CommonExtensionComponents-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-UnqualifiedDataTypes-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-CommonSignatureComponents-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-QualifiedDataTypes-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="Win32\Debug\EFaturaDemo.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>EFaturaDemo.exe</RemoteName>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-XAdESv141-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-ExtensionContentDataType-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-SignatureAggregateComponents-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-Invoice-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-ReceiptAdvice-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\CCTS_CCT_SchemaModule-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-xmldsig-core-schema-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-CommonBasicComponents-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-DespatchAdvice-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-CreditNote-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-CommonAggregateComponents-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-SignatureBasicComponents-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
