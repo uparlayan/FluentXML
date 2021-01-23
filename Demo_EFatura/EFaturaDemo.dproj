@@ -102,7 +102,7 @@
             <Form>Ana</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="Classes\EFatura_Class_.pas"/>
+        <DCCReference Include="Classes\InvoiceType_Class_.pas"/>
         <None Include="UBL\UBL-Invoice-2.1.xsd"/>
         <None Include="UBL\UBL-ApplicationResponse-2.1.xsd"/>
         <None Include="UBL\UBL-CreditNote-2.1.xsd"/>
@@ -148,7 +148,13 @@
                 <Platform value="Win64">False</Platform>
             </Platforms>
             <Deployment Version="3">
-                <DeployFile LocalName="UBL\UBL-XAdESv132-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="UBL\UBL-CommonAggregateComponents-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="UBL\UBL-SignatureBasicComponents-2.1.xsd" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
                         <Overwrite>true</Overwrite>
@@ -187,12 +193,6 @@
                 <DeployFile LocalName="UBL\UBL-QualifiedDataTypes-2.1.xsd" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="Win32\Debug\EFaturaDemo.exe" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>EFaturaDemo.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -238,6 +238,12 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="UBL\UBL-XAdESv132-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="UBL\UBL-CommonBasicComponents-2.1.xsd" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win32">
                         <RemoteDir>.\</RemoteDir>
@@ -256,15 +262,9 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="UBL\UBL-CommonAggregateComponents-2.1.xsd" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="Win32\Debug\EFaturaDemo.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="UBL\UBL-SignatureBasicComponents-2.1.xsd" Configuration="Debug" Class="ProjectFile">
-                    <Platform Name="Win32">
-                        <RemoteDir>.\</RemoteDir>
+                        <RemoteName>EFaturaDemo.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

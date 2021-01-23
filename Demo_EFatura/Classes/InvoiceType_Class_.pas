@@ -1,4 +1,4 @@
-﻿unit EFatura_Class_;
+﻿unit InvoiceType_Class_;
 
 interface
 
@@ -7,52 +7,53 @@ uses
   ;
 
 type
+  {$REGION 'TInvoiceType'}
   TInvoiceType = class
     private
-      FAccountingCustomerParty: TAccountingCustomerPartyType;
-      FBillingReference: TArray<TBillingReferenceType>;
-      FIssueDate: TIssueDateType;
-      FPaymentMeans: TArray<TPaymentMeansType>;
-      FAdditionalDocumentReference: TArray<TAdditionalDocumentReferenceType>;
-      FDespatchDocumentReference: TArray<TDespatchDocumentReferenceType>;
-      FProfileID: TProfileIDType;
-      FPaymentExchangeRate: TPaymentExchangeRateType;
-      FTaxTotal: TArray<TTaxTotalType>;
-      FLegalMonetaryTotal: TLegalMonetaryTotalType;
-      FPricingExchangeRate: TPricingExchangeRateType;
-      FWithholdingTaxTotal: TArray<TWithholdingTaxTotalType>;
-      FPaymentTerms: TPaymentTermsType;
-      FOrderReference: TOrderReferenceType;
-      FPaymentAlternativeExchangeRate: TPaymentAlternativeExchangeRateType;
-      FAccountingSupplierParty: TAccountingSupplierPartyType;
-      FUUID: TUUIDType;
-      FInvoicePeriod: TInvoicePeriodType;
-      FAccountingCost: TAccountingCostType;
-      FBuyerCustomerParty: TBuyerCustomerPartyType;
-      FPaymentCurrencyCode: TPaymentCurrencyCodeType;
-      FID: TIDType;
-      FUBLExtensions: TUBLExtensionsType;
-      FPricingCurrencyCode: TPricingCurrencyCodeType;
-      FDocumentCurrencyCode: TDocumentCurrencyCodeType;
-      FIssueTime: TIssueTimeType;
-      FSellerSupplierParty: TSellerSupplierPartyType;
-      FNote: TArray<TNoteType>;
-      FTaxExchangeRate: TTaxExchangeRateType;
-      FSignature: TArray<TSignatureType>;
-      FInvoiceLine: TArray<TInvoiceLineType>;
-      FDelivery: TArray<TDeliveryType>;
-      FPaymentAlternativeCurrencyCode: TPaymentAlternativeCurrencyCodeType;
-      FCopyIndicator: TCopyIndicatorType;
-      FCustomizationID: TCustomizationIDType;
-      FOriginatorDocumentReference: TArray<TOriginatorDocumentReferenceType>;
-      FLineCountNumeric: TLineCountNumericType;
-      FContractDocumentReference: TArray<TContractDocumentReferenceType>;
-      FInvoiceTypeCode: TInvoiceTypeCodeType;
-      FReceiptDocumentReference: TArray<TReceiptDocumentReferenceType>;
-      FUBLVersionID: TUBLVersionIDType;
-      FAllowanceCharge: TArray<TAllowanceChargeType>;
-      FTaxRepresentativeParty: TTaxRepresentativePartyType;
-      FTaxCurrencyCode: TTaxCurrencyCodeType;
+      FAccountingCustomerParty                          : TAccountingCustomerPartyType;
+      FBillingReference                                 : TArray<TBillingReferenceType>;
+      FIssueDate                                        : TIssueDateType;
+      FPaymentMeans                                     : TArray<TPaymentMeansType>;
+      FAdditionalDocumentReference                      : TArray<TAdditionalDocumentReferenceType>;
+      FDespatchDocumentReference                        : TArray<TDespatchDocumentReferenceType>;
+      FProfileID                                        : TProfileIDType;
+      FPaymentExchangeRate                              : TPaymentExchangeRateType;
+      FTaxTotal                                         : TArray<TTaxTotalType>;
+      FLegalMonetaryTotal                               : TLegalMonetaryTotalType;
+      FPricingExchangeRate                              : TPricingExchangeRateType;
+      FWithholdingTaxTotal                              : TArray<TWithholdingTaxTotalType>;
+      FPaymentTerms                                     : TPaymentTermsType;
+      FOrderReference                                   : TOrderReferenceType;
+      FPaymentAlternativeExchangeRate                   : TPaymentAlternativeExchangeRateType;
+      FAccountingSupplierParty                          : TAccountingSupplierPartyType;
+      FUUID                                             : TUUIDType;
+      FInvoicePeriod                                    : TInvoicePeriodType;
+      FAccountingCost                                   : TAccountingCostType;
+      FBuyerCustomerParty                               : TBuyerCustomerPartyType;
+      FPaymentCurrencyCode                              : TPaymentCurrencyCodeType;
+      FID                                               : TIDType;
+      FUBLExtensions                                    : TUBLExtensionsType;
+      FPricingCurrencyCode                              : TPricingCurrencyCodeType;
+      FDocumentCurrencyCode                             : TDocumentCurrencyCodeType;
+      FIssueTime                                        : TIssueTimeType;
+      FSellerSupplierParty                              : TSellerSupplierPartyType;
+      FNote                                             : TArray<TNoteType>;
+      FTaxExchangeRate                                  : TTaxExchangeRateType;
+      FSignature                                        : TArray<TSignatureType>;
+      FInvoiceLine                                      : TArray<TInvoiceLineType>;
+      FDelivery                                         : TArray<TDeliveryType>;
+      FPaymentAlternativeCurrencyCode                   : TPaymentAlternativeCurrencyCodeType;
+      FCopyIndicator                                    : TCopyIndicatorType;
+      FCustomizationID                                  : TCustomizationIDType;
+      FOriginatorDocumentReference                      : TArray<TOriginatorDocumentReferenceType>;
+      FLineCountNumeric                                 : TLineCountNumericType;
+      FContractDocumentReference                        : TArray<TContractDocumentReferenceType>;
+      FInvoiceTypeCode                                  : TInvoiceTypeCodeType;
+      FReceiptDocumentReference                         : TArray<TReceiptDocumentReferenceType>;
+      FUBLVersionID                                     : TUBLVersionIDType;
+      FAllowanceCharge                                  : TArray<TAllowanceChargeType>;
+      FTaxRepresentativeParty                           : TTaxRepresentativePartyType;
+      FTaxCurrencyCode                                  : TTaxCurrencyCodeType;
     public
       [NameSpace('ext')][Zorunlu]
       property UBLExtensions                           : TUBLExtensionsType                       read FUBLExtensions                            write FUBLExtensions;
@@ -143,6 +144,7 @@ type
       [NameSpace('cac')][Zorunlu]
       property InvoiceLine                             : TArray<TInvoiceLineType>                 read FInvoiceLine                              write FInvoiceLine;
   end;
+  {$ENDREGION}
 
 implementation
 

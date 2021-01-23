@@ -3,7 +3,7 @@ program EFaturaDemo;
 uses
   Vcl.Forms,
   Ana_ in 'Ana_.pas' {Ana},
-  EFatura_Class_ in 'Classes\EFatura_Class_.pas';
+  InvoiceType_Class_ in 'Classes\InvoiceType_Class_.pas';
 
 {$R *.res}
 
