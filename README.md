@@ -1,12 +1,37 @@
-Welcome to the FluentXML
+# FluentXML Generator
 
-This unit demonstrates how we can produce an XML document in Object Pascal (Delphi) with a simple way of using the fluent design pattern and is offered to community service for this purpose.
+> Object Pascal (Delphi) ile Fluent Design Pattern kullanarak kolay ve hızlı bir şekilde XML belgesi ve etiketleri üretmenizi sağlayan kütüphane.  
+> A library that demonstrates how to produce XML documents in Object Pascal (Delphi) using the fluent design pattern.
 
-Uğur PARLAYAN
+---
 
-http://www.potansif.com
+## 📋 İçindekiler / Table of Contents
 
-###### for example;
+- [Hakkında / About](#hakkında--about)
+- [Temel Kullanım Örneği / Basic Usage Example](#temel-kullanım-örneği--basic-usage-example)
+- [Yeni Özellikler ve İyileştirmeler / New Features & Improvements](#yeni-özellikler-ve-iyileştirmeler--new-features--improvements)
+  - [1. Otomatik XML Entity Escaping / Automatic XML Entity Escaping](#1-otomatik-xml-entity-escaping--automatic-xml-entity-escaping)
+  - [2. İzole ve Güvenli Sayı Biçimlendirme / Thread-Safe Invariant Formatting](#2-izole-ve-güvenli-sayı-biçimlendirme--thread-safe-invariant-formatting)
+- [Gelişmiş Kurumsal Örnek (E-Fatura / UBL 2.1) / Advanced Enterprise Example](#gelişmiş-kurumsal-örnek-e-fatura--ubl-21--advanced-enterprise-example)
+
+---
+
+## Hakkında / About
+
+**TR:** Bu ünite, Object Pascal (Delphi) ortamında Akıcı Tasarım Deseni (Fluent Design Pattern) kullanılarak basit, esnek ve okunabilir bir şekilde XML belgeleri üretilmesini sağlar ve topluluğun hizmetine sunulmuştur.
+
+**EN:** This unit demonstrates how we can produce an XML document in Object Pascal (Delphi) with a simple way of using the fluent design pattern and is offered to community service for this purpose.
+
+**Yazar / Author:** Uğur PARLAYAN  
+**Web:** http://www.potansif.com  
+
+---
+
+## Temel Kullanım Örneği / Basic Usage Example
+
+**TR:** Aşağıdaki örnek, iç içe etiketler, CDATA blokları ve öznitelikler (attributes) içeren temel bir Kitaplar XML yapısının nasıl oluşturulduğunu gösterir:
+
+**EN:** The following example demonstrates creating a basic Books XML structure with nested tags, CDATA blocks, and attributes:
 
 ```delphi
 procedure TForm1.Button1Click(Sender: TObject);
@@ -39,6 +64,7 @@ begin
                  .Add('Yazarlar'
                      ,New
                      .Add('Yazar', 'Julie C. MELONI')
+                     .Add('Yazar', '<![CDATA[TEST]]>')
                      )
                  )
              .Add('Kitap', [ 'ID="1002"', 'Indirimli="Evet"' ]
@@ -53,15 +79,14 @@ begin
                  )
              )
          ;
-   Memo1.Text := XML.SaveToFile(‘C:\Temp\Demo.xml’).AsString;
+   Memo1.Text := XML.SaveToFile('C:\Temp\Demo.xml').AsString;
  finally
    FreeAndNil(XML);
  end;
 end;
 ```
 
-###### And then the output produced is as follows;
-
+**Üretilen Çıktı / Produced Output:**
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -96,10 +121,13 @@ end;
 
 ---
 
-### New Features & Improvements
+## Yeni Özellikler ve İyileştirmeler / New Features & Improvements
 
-#### 1. Automatic XML Entity Escaping
-Special characters (`&`, `<`, `>`, `"`, `'`) in node text values are automatically escaped to valid XML entities (`&amp;`, `&lt;`, `&gt;`, `&quot;`, `&apos;`) without affecting nested subnodes.
+### 1. Otomatik XML Entity Escaping / Automatic XML Entity Escaping
+
+**TR:** Metin düğümlerindeki özel karakterler (`&`, `<`, `>`, `"`, `'`), alt düğümlerin etiket yapısını bozmadan otomatik olarak geçerli XML entity karşılıklarına (`&amp;`, `&lt;`, `&gt;`, `&quot;`, `&apos;`) dönüştürülür.
+
+**EN:** Special characters (`&`, `<`, `>`, `"`, `'`) in node text values are automatically escaped to valid XML entities (`&amp;`, `&lt;`, `&gt;`, `&quot;`, `&apos;`) without affecting nested subnodes.
 
 ```delphi
 procedure DemoEscaping;
@@ -125,7 +153,7 @@ begin
 end;
 ```
 
-**Produced Output:**
+**Üretilen Çıktı / Produced Output:**
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Urunler>
@@ -136,14 +164,19 @@ end;
 </Urunler>
 ```
 
-#### 2. Thread-Safe Invariant Formatting
-Number and float formatting uses an isolated static `TFormatSettings.Invariant` instance initialized once at startup. This eliminates global `FormatSettings` mutations and guarantees zero-overhead thread safety in multi-threaded applications.
+### 2. İzole ve Güvenli Sayı Biçimlendirme / Thread-Safe Invariant Formatting
+
+**TR:** Sayı ve ondalık biçimlendirmeleri, uygulama başlangıcında 1 kez ilklendirilen izole statik `TFormatSettings.Invariant` örneğini kullanır. Bu sayede global `FormatSettings` yan etkileri önlenir ve çoklu izlekli (multi-threaded) senaryolarda güvenli çalışma sağlanır.
+
+**EN:** Number and float formatting uses an isolated static `TFormatSettings.Invariant` instance initialized once at startup. This eliminates global `FormatSettings` mutations and guarantees zero-overhead thread safety in multi-threaded applications.
 
 ---
 
-### Advanced Enterprise Example (UBL E-Invoice Simulation)
+## Gelişmiş Kurumsal Örnek (E-Fatura / UBL 2.1) / Advanced Enterprise Example
 
-This showcase demonstrates constructing a complex, multi-level E-Invoice (UBL 2.1) XML structure in a **single fluent statement**, combining attributes, namespaces, stylesheets, subnode arrays, automatic entity escaping, CDATA sections, and self-closing tags:
+**TR:** Bu gövde gösterisi örneği; öznitelikler (attributes), namespace'ler, stylesheet'ler, alt düğüm dizileri, otomatik entity escaping, CDATA bölümleri ve kendi kapanan etiketlerin **tek bir akıcı (fluent) ifadede** nasıl birleştirildiğini karmaşık bir E-Fatura (UBL 2.1) yapısı üzerinde sergilemektedir:
+
+**EN:** This showcase demonstrates constructing a complex, multi-level E-Invoice (UBL 2.1) XML structure in a **single fluent statement**, combining attributes, namespaces, stylesheets, subnode arrays, automatic entity escaping, CDATA sections, and self-closing tags:
 
 ```delphi
 procedure BuildEnterpriseEInvoice;
@@ -168,10 +201,10 @@ begin
                  .Add('IssueTime', '22:50:00')
                  .Add('InvoiceTypeCode', 'SATIS'),
 
-              // Self-closing node with multiple attributes
+              // Öznitelikli kendi kapanan düğüm / Self-closing node with multiple attributes
               New.Add('AdditionalDocumentReference', ['ID="REF-2026"', 'Scheme="E-Invoice"', 'Status="Active"']),
 
-              // Supplier Party Details with Nested Hierarchy & Escaped Commercial Text
+              // Tedarikçi Taraf Detayları / Supplier Party Details with Nested Hierarchy
               New.Add('AccountingSupplierParty',
                   New.Add('Party',
                       New.Add('PartyIdentification', New.Add('ID', ['schemeID="VKN"'], '1234567890'))
@@ -186,7 +219,7 @@ begin
                   )
               ),
 
-              // Customer Party Details
+              // Müşteri Taraf Detayları / Customer Party Details
               New.Add('AccountingCustomerParty',
                   New.Add('Party',
                       New.Add('PartyIdentification', New.Add('ID', ['schemeID="TCKN"'], '98765432101'))
@@ -194,7 +227,7 @@ begin
                   )
               ),
 
-              // Invoice Line Items Array with Dynamic Price Escaping and CDATA Notes
+              // Kalem Satırları Dizisi / Invoice Line Items Array
               New.Add('InvoiceLine',
                   New.Add('ID', '1')
                      .Add('InvoicedQuantity', ['unitCode="C62"'], 100)
@@ -208,7 +241,7 @@ begin
                      .Add('Note', '<![CDATA[Kampanya İndirimi: 500 TL (KDV Dahil & Sepette Özel)]]>')
               ),
 
-              // Legal Monetary Total Summary
+              // Genel Toplam Özeti / Legal Monetary Total Summary
               New.Add('LegalMonetaryTotal',
                   New.Add('LineExtensionAmount', ['currencyID="TRY"'], 2500.00)
                      .Add('TaxExclusiveAmount', ['currencyID="TRY"'], 2500.00)
@@ -219,7 +252,7 @@ begin
           ])
           .FormatXml;
 
-    // Save formatted XML output to disk or stream
+    // Dosyaya kaydet veya çıktı al / Save to file or export string
     XML.SaveToFile('C:\Temp\Enterprise_EInvoice.xml');
     Writeln(XML.AsString);
   finally
@@ -228,7 +261,7 @@ begin
 end;
 ```
 
-**Resulting Formatted XML Output:**
+**Üretilen Biçimlendirilmiş XML Çıktısı / Resulting Formatted XML Output:**
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -302,5 +335,3 @@ end;
 	</cbc:LegalMonetaryTotal>
 </cbc:Invoice>
 ```
-
-
