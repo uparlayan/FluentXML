@@ -1,4 +1,4 @@
-﻿{-------------------------------------------------------------------------------
+{-------------------------------------------------------------------------------
 -  Author      : Uğur PARLAYAN                                                 -
 -  Email       : ugurparlayan@gmail.com                                        -
 -  Class Name  : TFluentXML Generator.                                         -
@@ -9,6 +9,7 @@
 -  Create Date : 2017-09-12                                                    -
 -  Update Date : 2020-01-06                                                    -
 -  Update Date : 2020-08-16                                                    -
+-  Update Date : 2026-07-26                                                    -
 -  License     : GPL-3.0                                                       -
 -  Copyright (C) 2017 Uğur PARLAYAN                                            -
 -------------------------------------------------------------------------------}
@@ -45,6 +46,7 @@ type
         function AsEncoderName: String;
       end;
     private
+      class var FXMLFormatSettings: TFormatSettings;
       _Version    : Double;
       _Encoding   : TEncoding;
       _NameSpace  : string;
@@ -142,15 +144,12 @@ end;
 function TFluentXML.AsString: String;
 var
   Tmp: String;
-  FS: TFormatSettings;
 begin
-  FS := FormatSettings;
-  FormatSettings.DecimalSeparator := '.';
   Tmp := _Encoding.AsEncoderName;
   if (Pos( '<?xml',_Source, 1) <= 0) then begin
       _Source := _if( ((_Version <> 0) or (Tmp.IsEmpty = False))
                     , _f ( '<?xml%s%s?>'#13#10,
-                         [ _if(_Version <> 0, _f(' version="%s"', [ formatfloat('0.0',_Version)]), '')
+                         [ _if(_Version <> 0, _f(' version="%s"', [ FormatFloat('0.0', _Version, FXMLFormatSettings)]), '')
                          , _if(Tmp.IsEmpty = False, _f(' encoding="%s"', [Tmp]), '')
                          ])
                     , '')
@@ -170,7 +169,6 @@ begin
                }
                ;
   end;
-  FormatSettings := FS;
   Result := _Source.Trim;
 end;
 
@@ -441,5 +439,8 @@ begin
   if (Self = TEncoding.Default)          then Result := 'Windows-1254' else
   Result := '';
 end;
+
+initialization
+  TFluentXML.FXMLFormatSettings := TFormatSettings.Invariant;
 
 end.
