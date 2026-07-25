@@ -93,3 +93,49 @@ end;
 	</Kitap>
 </Kitaplar>
 ```
+
+---
+
+### New Features & Improvements
+
+#### 1. Automatic XML Entity Escaping
+Special characters (`&`, `<`, `>`, `"`, `'`) in node text values are automatically escaped to valid XML entities (`&amp;`, `&lt;`, `&gt;`, `&quot;`, `&apos;`) without affecting nested subnodes.
+
+```delphi
+procedure DemoEscaping;
+var
+  XML: TFluentXML;
+begin
+  try
+    XML := New
+          .Version(1.0)
+          .Encoding(TEncoding.UTF8)
+          .Add('Urunler', 
+              New.Add('Urun', ['ID="1"'], 
+                  New.Add('Adi', 'C++ & Delphi')
+                     .Add('Aciklama', 'Fiyat < 100 TL & Indirim %10')
+              )
+          )
+          .FormatXml;
+
+    ShowMessage(XML.AsString);
+  finally
+    FreeAndNil(XML);
+  end;
+end;
+```
+
+**Produced Output:**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Urunler>
+	<Urun ID="1">
+		<Adi>C++ &amp; Delphi</Adi>
+		<Aciklama>Fiyat &lt; 100 TL &amp; Indirim %10</Aciklama>
+	</Urun>
+</Urunler>
+```
+
+#### 2. Thread-Safe Invariant Formatting
+Number and float formatting uses an isolated static `TFormatSettings.Invariant` instance initialized once at startup. This eliminates global `FormatSettings` mutations and guarantees zero-overhead thread safety in multi-threaded applications.
+

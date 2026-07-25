@@ -46,17 +46,18 @@ type
         function AsEncoderName: String;
       end;
     private
-      class var FXMLFormatSettings: TFormatSettings;
       _Version    : Double;
       _Encoding   : TEncoding;
       _NameSpace  : string;
       _StyleSheet : string;
       _Source     : String;
       _Root       : String;
+      class var FXMLFormatSettings: TFormatSettings;
     strict private
       function _if(aKosul: Boolean; aTrue, aFalse: String): String; overload;
-      function _f(const aFormat: string; const Args: array of const): string;
+      function _f(const aFormat: string; const aArgs: array of const): string;
       function _NS: String;
+      function XMLEscape(const aText: String): String;
     public
       /// <summary>
       ///  String Export amacıyla kullanılır. Tür String olduğu için fluent akışı bozulur. O nedenle aşırı yüklenmiş diğer fonksiyonu kullanın.
@@ -66,10 +67,10 @@ type
       ///  String Export amacıyla kullanılır. Parametre olarak aldığı değişkene bünyesinde tuttuğu XML kaynak kodunu aktarır.
       /// </summary>
       function AsString(out aStringVariable: String): TFluentXML; overload;
-      function Root(Name: String): TFluentXML;
-      function Version(Value: Double): TFluentXML;
-      function Encoding(Value: TEncoding): TFluentXML;
-      function NameSpace(Value: String): TFluentXML;
+      function Root(aName: String): TFluentXML;
+      function Version(aValue: Double): TFluentXML;
+      function Encoding(aValue: TEncoding): TFluentXML;
+      function NameSpace(aValue: String): TFluentXML;
       function StyleSheet(aType, aHref: String): TFluentXML;
       function Add(aNode: TFluentXML): TFluentXML; overload;
       function Add(aNodes: Array of TFluentXML): TFluentXML; overload;
@@ -172,9 +173,9 @@ begin
   Result := _Source.Trim;
 end;
 
-function TFluentXML.Version(Value: Double): TFluentXML;
+function TFluentXML.Version(aValue: Double): TFluentXML;
 begin
-  _Version := Value;
+  _Version := aValue;
   Result := Self;
 end;
 
@@ -185,15 +186,15 @@ begin
   Result.Encoding(aEncoding);
 end;
 
-function TFluentXML.Root(Name: String): TFluentXML;
+function TFluentXML.Root(aName: String): TFluentXML;
 begin
-  _Root := Name;
+  _Root := aName;
   Result := Self;
 end;
 
-function TFluentXML.Encoding(Value: TEncoding): TFluentXML;
+function TFluentXML.Encoding(aValue: TEncoding): TFluentXML;
 begin
-  _Encoding := Value;
+  _Encoding := aValue;
   Result := Self;
 end;
 
@@ -284,9 +285,9 @@ begin
   Result := Self;
 end;
 
-function TFluentXML.NameSpace(Value: String): TFluentXML;
+function TFluentXML.NameSpace(aValue: String): TFluentXML;
 begin
-  _NameSpace := Value.Trim;
+  _NameSpace := aValue.Trim;
   Result := Self;
 end;
 
@@ -298,21 +299,17 @@ end;
 
 function TFluentXML.Add(aNode: string; aValue: Variant): TFluentXML;
 begin
-  _Source := _Source + _f('<%0:s%1:s>%2:s</%0:s%1:s>', [_NS, aNode.Trim, VarToStr(aValue).Trim]) ;
+  _Source := _Source + _f('<%0:s%1:s>%2:s</%0:s%1:s>', [_NS, aNode.Trim, XMLEscape(VarToStr(aValue).Trim)]) ;
   Result := Self;
 end;
 
 function TFluentXML.Add(aNode: string; aSubNode: TFluentXML): TFluentXML;
-var
-  Tmp: Variant;
 begin
   if (Assigned(aSubNode) = TRUE) then begin
-      Tmp := aSubNode.AsString;
+      _Source := _Source + _f('<%0:s%1:s>%2:s</%0:s%1:s>', [_NS, aNode.Trim, aSubNode.AsString]);
       FreeAndNil(aSubNode);
-      Result := Self.Add(aNode, Tmp);
-  end else begin
-      Result := Self;
   end;
+  Result := Self;
 end;
 
 function TFluentXML.Add(aNode: TFluentXML): TFluentXML;
@@ -342,21 +339,21 @@ var
 begin
   Tmp := aAttributes.Split(' ').Trim;
   _Source := _Source
-           + _f('<%0:s%1:s%2:s>%3:s</%0:s%1:s>', [_NS, aNode.Trim, _if(Tmp.IsEmpty = True, '', ' ' + Tmp), VarToStr(aValue).Trim]) ;
+           + _f('<%0:s%1:s%2:s>%3:s</%0:s%1:s>', [_NS, aNode.Trim, _if(Tmp.IsEmpty = True, '', ' ' + Tmp), XMLEscape(VarToStr(aValue).Trim)]) ;
   Result := Self;
 end;
 
 function TFluentXML.Add(aNode: string; aAttributes: TVarArray; aSubNode: TFluentXML): TFluentXML;
 var
-  Tmp: Variant;
+  Tmp: String;
 begin
   if (Assigned(aSubNode) = TRUE) then begin
-      Tmp := aSubNode.AsString;
+      Tmp := aAttributes.Split(' ').Trim;
+      _Source := _Source
+               + _f('<%0:s%1:s%2:s>%3:s</%0:s%1:s>', [_NS, aNode.Trim, _if(Tmp.IsEmpty = True, '', ' ' + Tmp), aSubNode.AsString]);
       FreeAndNil(aSubNode);
-      Result := Self.Add(aNode, aAttributes, Tmp);
-  end else begin
-      Result := Self;
   end;
+  Result := Self;
 end;
 
 function TFluentXML.Add(aNode: string; aAttributes: TVarArray): TFluentXML;
@@ -368,9 +365,9 @@ begin
   Result := Self;
 end;
 
-function TFluentXML._f(const aFormat: string; const Args: array of const): string;
+function TFluentXML._f(const aFormat: string; const aArgs: array of const): string;
 begin
-  Result := Format(aFormat, Args);
+  Result := Format(aFormat, aArgs);
 end;
 
 function TFluentXML._if(aKosul: Boolean; aTrue, aFalse: String): String;
@@ -381,6 +378,17 @@ end;
 function TFluentXML._NS: String;
 begin
   Result := _if( (_NameSpace.Trim.IsEmpty = True), '', _NameSpace.Trim+':');
+end;
+
+function TFluentXML.XMLEscape(const aText: String): String;
+begin
+  Result := aText;
+  if Result.IsEmpty then Exit;
+  Result := StringReplace(Result, '&',  '&amp;',  [rfReplaceAll]);
+  Result := StringReplace(Result, '<',  '&lt;',   [rfReplaceAll]);
+  Result := StringReplace(Result, '>',  '&gt;',   [rfReplaceAll]);
+  Result := StringReplace(Result, '"',  '&quot;', [rfReplaceAll]);
+  Result := StringReplace(Result, '''', '&apos;', [rfReplaceAll]);
 end;
 
 function TFluentXML.SaveToFile(aFileName: TFileName): TFluentXML;

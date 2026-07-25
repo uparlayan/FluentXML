@@ -1,4 +1,4 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{A75D4150-D3B7-48CB-B371-3FC6748261CF}</ProjectGuid>
         <MainSource>FluentPack.dpk</MainSource>
@@ -70,8 +70,10 @@
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
-        <DCC_DcuOutput>.\$(Platform)\$(Config)</DCC_DcuOutput>
-        <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+        <DCC_DcuOutput>.\Compiled\Dcu</DCC_DcuOutput>
+        <DCC_ExeOutput>.\Compiled\Exe</DCC_ExeOutput>
+        <DCC_BplOutput>.\Compiled\Exe</DCC_BplOutput>
+        <DCC_DcpOutput>.\Compiled\Dcu</DCC_DcpOutput>
         <DCC_E>false</DCC_E>
         <DCC_N>false</DCC_N>
         <DCC_S>false</DCC_S>
@@ -116,6 +118,9 @@
         <DCC_Description>Fluent XML by Uğur PARLAYAN</DCC_Description>
         <DCC_UsePackage>rtl;$(DCC_UsePackage)</DCC_UsePackage>
         <DCC_DcuOutput>.\Compiled\Dcu</DCC_DcuOutput>
+        <DCC_ExeOutput>.\Compiled\Exe</DCC_ExeOutput>
+        <DCC_BplOutput>.\Compiled\Exe</DCC_BplOutput>
+        <DCC_DcpOutput>.\Compiled\Dcu</DCC_DcpOutput>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
         <DCC_UsePackage>rtl;$(DCC_UsePackage)</DCC_UsePackage>

@@ -1,4 +1,4 @@
-﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{7ECC7A97-379B-4C75-A00A-3D87385C8631}</ProjectGuid>
     </PropertyGroup>
@@ -10,6 +10,9 @@
             <Dependencies/>
         </Projects>
         <Projects Include="Demo_EFatura\EFaturaDemo.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="test\TestFluentXML.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -47,14 +50,23 @@
     <Target Name="EFaturaDemo:Make">
         <MSBuild Projects="Demo_EFatura\EFaturaDemo.dproj" Targets="Make"/>
     </Target>
+    <Target Name="TestFluentXML">
+        <MSBuild Projects="test\TestFluentXML.dproj"/>
+    </Target>
+    <Target Name="TestFluentXML:Clean">
+        <MSBuild Projects="test\TestFluentXML.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TestFluentXML:Make">
+        <MSBuild Projects="test\TestFluentXML.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="FluentPack;FluentXml_Demo;EFaturaDemo"/>
+        <CallTarget Targets="FluentPack;FluentXml_Demo;EFaturaDemo;TestFluentXML"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="FluentPack:Clean;FluentXml_Demo:Clean;EFaturaDemo:Clean"/>
+        <CallTarget Targets="FluentPack:Clean;FluentXml_Demo:Clean;EFaturaDemo:Clean;TestFluentXML:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="FluentPack:Make;FluentXml_Demo:Make;EFaturaDemo:Make"/>
+        <CallTarget Targets="FluentPack:Make;FluentXml_Demo:Make;EFaturaDemo:Make;TestFluentXML:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
