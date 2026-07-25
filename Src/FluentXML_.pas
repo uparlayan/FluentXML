@@ -1,4 +1,4 @@
-{-------------------------------------------------------------------------------
+﻿{-------------------------------------------------------------------------------
 -  Author      : Uğur PARLAYAN                                                 -
 -  Email       : ugurparlayan@gmail.com                                        -
 -  Class Name  : TFluentXML Generator.                                         -
@@ -258,7 +258,7 @@ begin
                             if (N = '<') then begin          { >< }
                                 Ek := #13#10 + DupeString(Tab, TabCount);// + '{' + TabCount.ToString + '}';
                                 if (I < B - 2) then begin
-                                    if (_Source[I+2] = '!') then Ek := ''; { <! }
+                                    if (_Source[I + 2] = '!') then Ek := ''; { <! }
                                 end;
                             end;
                         end;
@@ -273,8 +273,8 @@ begin
   for I := 1 to B do begin
       O := _Source[I];
       if (I < B - 2) then begin
-          X := _Source[I+1];
-          N := _Source[I+2];
+          X := _Source[I + 1];
+          N := _Source[I + 2];
       end else begin
           X := #0;
           N := #0;

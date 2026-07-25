@@ -4,6 +4,7 @@ interface
 
 uses
     System.Generics.Collections
+  , fluentXml_
   ;
 
 type

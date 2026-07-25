@@ -39,4 +39,5 @@ begin
     on E: Exception do
       Writeln('HATA: ', E.Message);
   end;
+  readln;
 end.
