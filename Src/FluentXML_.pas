@@ -1,4 +1,4 @@
-﻿{-------------------------------------------------------------------------------
+{-------------------------------------------------------------------------------
 -  Author      : Uğur PARLAYAN                                                 -
 -  Email       : ugurparlayan@gmail.com                                        -
 -  Class Name  : TFluentXML Generator.                                         -
@@ -22,6 +22,7 @@ uses
   , System.StrUtils
   , System.Variants
   , System.Classes
+  , Data.DB
   ;
 
 type
@@ -80,6 +81,8 @@ type
       function Add(aNode: string; aAttributes: TVarArray): TFluentXML; overload;
       function Add(aNode: string; aAttributes: TVarArray; aValue: Variant): TFluentXML; overload;
       function Add(aNode: string; aAttributes: TVarArray; aSubNode: TFluentXML): TFluentXML; overload;
+      function Add(aNodeName: string; aDataSet: TDataSet): TFluentXML; overload;
+      function Add(aNodeName, aRowName: string; aDataSet: TDataSet): TFluentXML; overload;
       function SaveToFile(aFileName: TFileName): TFluentXML;
       function FormatXml: TFluentXML;
       class function New(aVersion: Double; aEncoding: TEncoding): TFluentXML;
@@ -200,29 +203,60 @@ end;
 
 function TFluentXML.FormatXml: TFluentXML;
 var
-  I           : Integer;     //  Indis
-  B           : Integer;     //  Len / Size...
-  T           : string;
-  O           : Char;        //  önceki
-  X           : Char;        //  şimdiki
-  N           : Char;        //  sonraki
-  Ek          : string;
-  TabCount    : Integer;
-  TagInside   : Boolean;
-  IsStartTag  : Boolean;
-  Tirnak      : Boolean;
-  cData       : Boolean;
+  I, B, TabCount, Cap: Integer;
+  O, X, N: Char;
+  Ek: string;
+  TagInside, Tirnak, cData: Boolean;
+  Buffer, ResultStr: string;
+  DestP: PChar;
+
+  procedure AppendChar(C: Char);
+  var
+    Used: Integer;
+  begin
+    Used := DestP - PChar(Buffer);
+    if Used + 1 > Cap then begin
+        Cap := Cap * 2 + 1024;
+        SetLength(Buffer, Cap);
+        DestP := PChar(Buffer) + Used;
+    end;
+    DestP^ := C;
+    Inc(DestP);
+  end;
+
+  procedure AppendString(const S: string);
+  var
+    Len, Used: Integer;
+  begin
+    Len := Length(S);
+    if Len = 0 then Exit;
+    Used := DestP - PChar(Buffer);
+    if Used + Len > Cap then begin
+        Cap := (Cap + Len) * 2 + 1024;
+        SetLength(Buffer, Cap);
+        DestP := PChar(Buffer) + Used;
+    end;
+    Move(PChar(S)^, DestP^, Len * SizeOf(Char));
+    Inc(DestP, Len);
+  end;
+
 begin
-  if (_Root.Trim.IsEmpty = False) then _Source := _f('<%0:s%1:s>%2:s</%0:s%1:s>', [_NS, _Root.Trim, _Source{, _if(_NS.Trim.IsEmpty, '', ':')}]);
+  if (_Root.Trim.IsEmpty = False) then _Source := _f('<%0:s%1:s>%2:s</%0:s%1:s>', [_NS, _Root.Trim, _Source]);
   B := Length(_Source);
+  if B = 0 then Exit(Self);
+
+  Cap := B * 2 + 1024;
+  SetLength(Buffer, Cap);
+  DestP := PChar(Buffer);
+
   O := #0;
   X := #0;
   N := #0;
   TabCount    := 1;
   TagInside   := (_Source[1] = '<');
-  IsStartTag  := TagInside;
   Tirnak      := FALSE;
   cData       := FALSE;
+
   for I := 1 to B do begin
       Ek := '';
       O := X;
@@ -239,11 +273,9 @@ begin
                         if (X = '<') then begin
                             TagInside := True;
                             Inc(TabCount);
-                            IsStartTag := True;
                             if (N = '/')
                             or (N = '!') then begin
-                                IsStartTag := FALSE;
-                                Dec(TabCount, 1); { </ } { veya } { <! }
+                                Dec(TabCount, 1);
                             end;
                         end;
                       End;
@@ -252,36 +284,44 @@ begin
                         if (X = '>') then begin
                             TagInside := False;
                             if (O = '/') then begin
-                                Dec(TabCount); { /> }
-                                IsStartTag := FALSE; { bu da sadece tagın göründüğü modeldir, verisiz, sadece tagın adı olur. örneğin <tag/> gibi...}
+                                Dec(TabCount);
                             end;
-                            if (N = '<') then begin          { >< }
-                                Ek := #13#10 + DupeString(Tab, TabCount);// + '{' + TabCount.ToString + '}';
+                            if (N = '<') then begin
+                                Ek := #13#10 + DupeString(Tab, TabCount);
                                 if (I < B - 2) then begin
-                                    if (_Source[I + 2] = '!') then Ek := ''; { <! }
+                                    if (_Source[I + 2] = '!') then Ek := '';
                                 end;
                             end;
                         end;
                       end;
           end;
       end;
-      T := T + X + Ek;
+      AppendChar(X);
+      if Ek <> '' then AppendString(Ek);
   end;
-  B := T.Trim.Length;
-  _Source := T.Trim;
-  T := '';
+
+  SetLength(Buffer, DestP - PChar(Buffer));
+  ResultStr := Buffer.Trim;
+  B := Length(ResultStr);
+
+  Cap := B + 1024;
+  SetLength(Buffer, Cap);
+  DestP := PChar(Buffer);
+
   for I := 1 to B do begin
-      O := _Source[I];
+      O := ResultStr[I];
       if (I < B - 2) then begin
-          X := _Source[I + 1];
-          N := _Source[I + 2];
+          X := ResultStr[I + 1];
+          N := ResultStr[I + 2];
       end else begin
           X := #0;
           N := #0;
       end;
-      if NOT ( (O = Tab) and (X = '<') and (N = '/') ) then T := T + O;
+      if NOT ( (O = Tab) and (X = '<') and (N = '/') ) then AppendChar(O);
   end;
-  _Source := StringReplace(T, Tab, #32#32, [rfReplaceAll]);
+
+  SetLength(Buffer, DestP - PChar(Buffer));
+  _Source := StringReplace(Buffer, Tab, #32#32, [rfReplaceAll]);
   Result := Self;
 end;
 
@@ -356,6 +396,52 @@ begin
   Result := Self;
 end;
 
+function TFluentXML.Add(aNodeName: string; aDataSet: TDataSet): TFluentXML;
+begin
+  Result := Add(aNodeName, 'Row', aDataSet);
+end;
+
+function TFluentXML.Add(aNodeName, aRowName: string; aDataSet: TDataSet): TFluentXML;
+var
+  ContainerNode, RowNode: TFluentXML;
+  Field: TField;
+  ActualRowName: string;
+begin
+  if (Assigned(aDataSet) = False) or aDataSet.IsEmpty then Exit(Self);
+
+  if aRowName.Trim.IsEmpty then
+    ActualRowName := 'Row'
+  else
+    ActualRowName := aRowName.Trim;
+
+  if aNodeName.Trim.IsEmpty then
+    ContainerNode := Self
+  else
+    ContainerNode := TFluentXML.Create;
+
+  aDataSet.DisableControls;
+  try
+    aDataSet.First;
+    while not aDataSet.Eof do begin
+        RowNode := TFluentXML.Create;
+        for Field in aDataSet.Fields do begin
+            if not Field.IsNull then
+              RowNode.Add(Field.FieldName, Field.AsString);
+        end;
+
+        ContainerNode.Add(ActualRowName, RowNode);
+        aDataSet.Next;
+    end;
+  finally
+    aDataSet.EnableControls;
+  end;
+
+  if (aNodeName.Trim.IsEmpty = False) then
+    Self.Add(aNodeName.Trim, ContainerNode);
+
+  Result := Self;
+end;
+
 function TFluentXML.Add(aNode: string; aAttributes: TVarArray): TFluentXML;
 var
   Tmp: String;
@@ -394,9 +480,11 @@ end;
 function TFluentXML.SaveToFile(aFileName: TFileName): TFluentXML;
 var
   Dosya : TStreamWriter;
+  TargetDir : String;
 begin
   try
-    if (directoryExists(ExtractFileDir(aFileName), True) = TRUE) then begin
+    TargetDir := ExtractFileDir(aFileName);
+    if TargetDir.IsEmpty or DirectoryExists(TargetDir, True) then begin
         try
           Dosya := TStreamWriter.Create(aFileName, False, TEncoding.UTF8);
           Dosya.Write(Self.AsString);
@@ -405,7 +493,7 @@ begin
           FreeAndNil(Dosya);
         end;
     end else begin
-        raise Exception.Create('Directory not found');
+        raise Exception.Create('Directory not found: ' + TargetDir);
     end;
   finally
     Result := Self;

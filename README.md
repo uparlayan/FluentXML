@@ -12,6 +12,7 @@
 - [Yeni Özellikler ve İyileştirmeler / New Features & Improvements](#yeni-özellikler-ve-iyileştirmeler--new-features--improvements)
   - [1. Otomatik XML Entity Escaping / Automatic XML Entity Escaping](#1-otomatik-xml-entity-escaping--automatic-xml-entity-escaping)
   - [2. İzole ve Güvenli Sayı Biçimlendirme / Thread-Safe Invariant Formatting](#2-izole-ve-güvenli-sayı-biçimlendirme--thread-safe-invariant-formatting)
+  - [3. Veritabanı (TDataSet) Entegrasyonu / Database (TDataSet) Integration](#3-veritabanı-tdataset-entegrasyonu--database-tdataset-integration)
 - [Gelişmiş Kurumsal Örnek (E-Fatura / UBL 2.1) / Advanced Enterprise Example](#gelişmiş-kurumsal-örnek-e-fatura--ubl-21--advanced-enterprise-example)
 
 ---
@@ -169,6 +170,30 @@ end;
 **TR:** Sayı ve ondalık biçimlendirmeleri, uygulama başlangıcında 1 kez ilklendirilen izole statik `TFormatSettings.Invariant` örneğini kullanır. Bu sayede global `FormatSettings` yan etkileri önlenir ve çoklu izlekli (multi-threaded) senaryolarda güvenli çalışma sağlanır.
 
 **EN:** Number and float formatting uses an isolated static `TFormatSettings.Invariant` instance initialized once at startup. This eliminates global `FormatSettings` mutations and guarantees zero-overhead thread safety in multi-threaded applications.
+
+### 3. Veritabanı (TDataSet) Entegrasyonu / Database (TDataSet) Integration
+
+**TR:** `Add(aNodeName, aDataSet)` veya `Add(aNodeName, aRowName, aDataSet)` metodları ile herhangi bir Delphi `TDataSet` (örneğin `TFDQuery`, `TClientDataSet` vb.) verisi tek satırda otomatik olarak XML düğüm dizisine dönüştürülür.
+
+**EN:** Any Delphi `TDataSet` (e.g. `TFDQuery`, `TClientDataSet`, etc.) data can be automatically converted into XML node structures in a single line using `Add(aNodeName, aDataSet)` or `Add(aNodeName, aRowName, aDataSet)`.
+
+```delphi
+procedure DemoDataSetToXML(aQuery: TDataSet);
+var
+  XML: TFluentXML;
+begin
+  try
+    // Veritabanı sorgu sonucunu doğrudan XML düğümlerine aktarır
+    XML := New.Root('MusteriListesi')
+              .Add('Musteriler', 'Musteri', aQuery)
+              .FormatXml;
+
+    ShowMessage(XML.AsString);
+  finally
+    FreeAndNil(XML);
+  end;
+end;
+```
 
 ---
 
