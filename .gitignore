@@ -1,3 +1,6 @@
 /test/__history
 /Src/__history
 __history
+/Demo_EFatura/*.identcache
+/*.identcache
+/test/*.identcache

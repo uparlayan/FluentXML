@@ -1,4 +1,4 @@
-﻿package FluentPack;
+package FluentPack;
 
 {$R *.res}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
@@ -29,7 +29,8 @@
 {$IMPLICITBUILD ON}
 
 requires
-  rtl;
+  rtl,
+  dbrtl;
 
 contains
   FluentXML_ in 'Src\FluentXML_.pas';

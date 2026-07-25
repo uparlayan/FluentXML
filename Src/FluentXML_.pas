@@ -95,6 +95,21 @@ type
   function XML(aNameSpace: String): TFluentXML; overload;
   function XML(aEncoding: TEncoding): TFluentXML; overload;
 
+  type
+    /// <summary>
+    /// TFluentXML sınıfının Delphi IDE Paleti (Tool Palette) için TComponent temsilcisi.
+    /// </summary>
+    TFluentXmlComponent = class(TComponent)
+    private
+      FXML: TFluentXML;
+    public
+      constructor Create(aOwner: TComponent); override;
+      destructor Destroy; override;
+      property Xml: TFluentXML read FXML;
+    end;
+
+  procedure Register;
+
 implementation
 
 function New: TFluentXML;
@@ -534,6 +549,23 @@ begin
   if (Self = TEncoding.BigEndianUnicode) then Result := 'UTF-16BE'     else
   if (Self = TEncoding.Default)          then Result := 'Windows-1254' else
   Result := '';
+end;
+
+constructor TFluentXmlComponent.Create(aOwner: TComponent);
+begin
+  inherited Create(aOwner);
+  FXML := TFluentXML.Create;
+end;
+
+destructor TFluentXmlComponent.Destroy;
+begin
+  FreeAndNil(FXML);
+  inherited Destroy;
+end;
+
+procedure Register;
+begin
+  RegisterComponents('FluentXML', [TFluentXmlComponent]);
 end;
 
 initialization

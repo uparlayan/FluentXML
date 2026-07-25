@@ -13,6 +13,7 @@
   - [1. Otomatik XML Entity Escaping / Automatic XML Entity Escaping](#1-otomatik-xml-entity-escaping--automatic-xml-entity-escaping)
   - [2. İzole ve Güvenli Sayı Biçimlendirme / Thread-Safe Invariant Formatting](#2-izole-ve-güvenli-sayı-biçimlendirme--thread-safe-invariant-formatting)
   - [3. Veritabanı (TDataSet) Entegrasyonu / Database (TDataSet) Integration](#3-veritabanı-tdataset-entegrasyonu--database-tdataset-integration)
+  - [4. Delphi IDE Paleti Temsilcisi (TFluentXmlComponent) / Delphi IDE Tool Palette Proxy](#4-delphi-ide-paleti-temsilcisi-tfluentxmlcomponent--delphi-ide-tool-palette-proxy)
 - [Gelişmiş Kurumsal Örnek (E-Fatura / UBL 2.1) / Advanced Enterprise Example](#gelişmiş-kurumsal-örnek-e-fatura--ubl-21--advanced-enterprise-example)
 
 ---
@@ -192,6 +193,26 @@ begin
   finally
     FreeAndNil(XML);
   end;
+end;
+```
+
+### 4. Delphi IDE Paleti Temsilcisi (TFluentXmlComponent) / Delphi IDE Tool Palette Proxy
+
+**TR:** `TFluentXML` hafif ve esnek bir `TObject` yapısı olarak korunurken, Delphi IDE Tool Palette (Bileşen Paleti) ve Form / DataModule tasarımı tercih eden geliştiriciler için `TFluentXmlComponent` temsilci bileşeni tasarlanmıştır. `FluentPack.dpk` paketi kurulduğunda `FluentXML` sekmesinde yer alır.
+
+**EN:** While `TFluentXML` remains a lightweight and flexible `TObject`, `TFluentXmlComponent` proxy component is designed for developers who prefer the Delphi IDE Tool Palette and Form / DataModule designer. It is registered under the `FluentXML` palette tab when `FluentPack.dpk` is installed.
+
+```delphi
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  // Component Palette üzerinden sürüklenen TFluentXmlComponent kullanımı
+  FluentXmlComponent1.Xml
+    .Version(1.0)
+    .Encoding(TEncoding.UTF8)
+    .Add('Mesaj', 'Component Palette üzerinden oluşturuldu!')
+    .FormatXml;
+
+  ShowMessage(FluentXmlComponent1.Xml.AsString);
 end;
 ```
 
