@@ -1,6 +1,8 @@
+# Delphi temporary & user local files
+*.local
+*.identcache
+*.stat
+__history/
 /test/__history
 /Src/__history
-__history
-/Demo_EFatura/*.identcache
-/*.identcache
-/test/*.identcache
+/Compiled/
